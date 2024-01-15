@@ -1,6 +1,7 @@
-package com.mercadolibre.be_java_hisp_w24_g02.repository;
+package com.mercadolibre.be_java_hisp_w24_g02.repository.implementations;
 
 import com.mercadolibre.be_java_hisp_w24_g02.entity.Post;
+import com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces.IPostRepository;
 
 import java.util.List;
 import java.util.Optional;

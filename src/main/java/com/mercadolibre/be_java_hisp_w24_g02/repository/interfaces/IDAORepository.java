@@ -1,4 +1,4 @@
-package com.mercadolibre.be_java_hisp_w24_g02.repository;
+package com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces;
 
 import java.util.List;
 import java.util.Optional;

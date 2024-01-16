@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "userId": 1,
+    "date": "2024-01-15",
+    "product": {
+      "id": 1001,
+      "name": "Laptop XYZ",
+      "type": "Laptop",
+      "brand": "XYZ",
+      "color": "Silver",
+      "notes": "Potente laptop para tareas exigentes"
+    },
+    "category": 1,
+    "price": 1299.99
+  },
+  {
+    "id": 2,
+    "userId": 2,
+    "date": "2024-02-01",
+    "product": {
+      "id": 1002,
+      "name": "Smartphone ABC",
+      "type": "Smartphone",
+      "brand": "ABC",
+      "color": "Black",
+      "notes": "Último modelo de smartphone con cámara de alta resolución"
+    },
+    "category": 2,
+    "price": 799.99
+  },
+  {
+    "id": 3,
+    "userId": 3,
+    "date": "2024-03-10",
+    "product": {
+      "id": 1003,
+      "name": "Cámara DSLR 123",
+      "type": "Cámara",
+      "brand": "DSLR",
+      "color": "Black",
+      "notes": "Cámara profesional para fotógrafos aficionados y profesionales"
+    },
+    "category": 3,
+    "price": 899.99
+  },
+  {
+    "id": 4,
+    "userId": 4,
+    "date": "2024-04-05",
+    "product": {
+      "id": 1004,
+      "name": "Tablet XYZ",
+      "type": "Tablet",
+      "brand": "XYZ",
+      "color": "White",
+      "notes": "Tablet compacta con pantalla de alta resolución"
+    },
+    "category": 4,
+    "price": 349.99
+  },
+  {
+    "id": 5,
+    "userId": 5,
+    "date": "2024-05-20",
+    "product": {
+      "id": 1005,
+      "name": "Auriculares ABC",
+      "type": "Auriculares",
+      "brand": "ABC",
+      "color": "Red",
+      "notes": "Auriculares inalámbricos con cancelación de ruido"
+    },
+    "category": 5,
+    "price": 149.99
+  },
+  {
+    "id": 6,
+    "userId": 6,
+    "date": "2024-06-15",
+    "product": {
+      "id": 1006,
+      "name": "Impresora XYZ",
+      "type": "Impresora",
+      "brand": "XYZ",
+      "color": "Black",
+      "notes": "Impresora multifuncional para oficinas"
+    },
+    "category": 6,
+    "price": 299.99
+  },
+  {
+    "id": 7,
+    "userId": 7,
+    "date": "2024-07-02",
+    "product": {
+      "id": 1007,
+      "name": "Teclado ABC",
+      "type": "Teclado",
+      "brand": "ABC",
+      "color": "Silver",
+      "notes": "Teclado mecánico para gamers"
+    },
+    "category": 7,
+    "price": 89.99
+  },
+  {
+    "id": 8,
+    "userId": 8,
+    "date": "2024-08-18",
+    "product": {
+      "id": 1008,
+      "name": "Monitor XYZ",
+      "type": "Monitor",
+      "brand": "XYZ",
+      "color": "Black",
+      "notes": "Monitor de alta resolución para diseñadores"
+    },
+    "category": 8,
+    "price": 499.99
+  },
+  {
+    "id": 9,
+    "userId": 9,
+    "date": "2024-09-12",
+    "product": {
+      "id": 1009,
+      "name": "Altavoces ABC",
+      "type": "Altavoces",
+      "brand": "ABC",
+      "color": "Wood",
+      "notes": "Altavoces bluetooth de alta fidelidad"
+    },
+    "category": 9,
+    "price": 199.99
+  },
+  {
+    "id": 10,
+    "userId": 10,
+    "date": "2024-10-05",
+    "product": {
+      "id": 1010,
+      "name": "Reproductor de Blu-ray XYZ",
+      "type": "Reproductor de Blu-ray",
+      "brand": "XYZ",
+      "color": "Black",
+      "notes": "Reproductor de Blu-ray 4K con funciones inteligentes"
+    },
+    "category": 10,
+    "price": 129.99
+  }
+]

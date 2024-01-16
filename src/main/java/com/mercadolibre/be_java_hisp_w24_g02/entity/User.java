@@ -14,4 +14,5 @@ public class User {
     private String name;
     private List<User> followers;
     private List<User> followed;
+
 }

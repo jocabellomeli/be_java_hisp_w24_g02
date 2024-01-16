@@ -1,5 +1,6 @@
 package com.mercadolibre.be_java_hisp_w24_g02.controller;
 
+import com.mercadolibre.be_java_hisp_w24_g02.dao.UserFollowedsPostsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dao.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,12 @@ public class UserController {
     public ResponseEntity<UserRelationshipsDTO> getUserFollowers(@PathVariable Integer userId) {
         UserRelationshipsDTO userRelationshipsDTO = userService.getUserFollowers(userId);
         return ResponseEntity.ok(userRelationshipsDTO);
+    }
+
+    @GetMapping("products/followed/{userId}/list")
+    public ResponseEntity<UserFollowedsPostsDTO> getUserFollowed(@PathVariable Integer userId) {
+        UserFollowedsPostsDTO userServiceUserFollowed = userService.getFollowedPost(userId);
+        return ResponseEntity.ok(userServiceUserFollowed);
     }
 
 }

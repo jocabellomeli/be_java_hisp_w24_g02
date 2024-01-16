@@ -1,6 +1,6 @@
 package com.mercadolibre.be_java_hisp_w24_g02.controller;
 
-import com.mercadolibre.be_java_hisp_w24_g02.dao.UserRelationshipsDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

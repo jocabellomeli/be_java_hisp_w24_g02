@@ -1,6 +1,6 @@
 package com.mercadolibre.be_java_hisp_w24_g02.controller;
 
-import com.mercadolibre.be_java_hisp_w24_g02.dao.CreatePostDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.CreatePostDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IPostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

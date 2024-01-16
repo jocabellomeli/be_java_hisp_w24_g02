@@ -48,6 +48,6 @@ public class PostRepositoryImpl implements IPostRepository {
 
     @Override
     public void delete(Integer id) {
-        this.posts = this.posts.stream().filter(post -> Objects.equals(post.getId(), id)).toList();
+        this.posts = this.posts.stream().filter(post -> !Objects.equals(post.getId(), id)).toList();
     }
 }

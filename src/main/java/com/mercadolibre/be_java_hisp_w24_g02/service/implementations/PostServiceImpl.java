@@ -1,6 +1,6 @@
 package com.mercadolibre.be_java_hisp_w24_g02.service.implementations;
 
-import com.mercadolibre.be_java_hisp_w24_g02.dao.CreatePostDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.CreatePostDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.Post;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.Product;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.NotFoundException;
@@ -19,23 +19,23 @@ public class PostServiceImpl implements IPostService {
     private IUserRepository userRepository;
 
     @Override
-    public Boolean createProductPost(CreatePostDTO createPostDTO) {
-        if(this.userRepository.findById(createPostDTO.user_id()).isEmpty()){
-            throw new NotFoundException("user id "+ createPostDTO.user_id() + " not found");
+    public void createProductPost(CreatePostDTO createPostDTO) {
+        if(this.userRepository.findById(createPostDTO.userId()).isEmpty()){
+            throw new NotFoundException("user id "+ createPostDTO.userId() + " not found");
         }
         this.postRepository.save(this.transformCreatePostDAOToPostEntity(createPostDTO));
-        return Boolean.TRUE;
+        System.out.println(this.postRepository.findAll());
     }
 
     private Post transformCreatePostDAOToPostEntity(CreatePostDTO postDAO){
         Integer id = this.postRepository.findAll().size();
         return new Post(
                 id,
-                postDAO.user_id(),
+                postDAO.userId(),
                 ValidateDate.validateDateString(postDAO.date(), "dd-MM-yyyy"),
                 new Product(
-                        postDAO.product().product_id(),
-                        postDAO.product().product_name(),
+                        postDAO.product().productId(),
+                        postDAO.product().productName(),
                         postDAO.product().type(),
                         postDAO.product().brand(),
                         postDAO.product().color(),

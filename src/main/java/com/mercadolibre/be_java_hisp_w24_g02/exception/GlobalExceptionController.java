@@ -1,6 +1,7 @@
 package com.mercadolibre.be_java_hisp_w24_g02.exception;
 
-import com.mercadolibre.be_java_hisp_w24_g02.dao.ExceptionDAO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.ExceptionDAO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.FieldExceptionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -27,8 +28,11 @@ public class GlobalExceptionController {
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidationErrors(MethodArgumentNotValidException ex) {
+    public ResponseEntity<List<FieldExceptionDTO>> handleValidationErrors(MethodArgumentNotValidException ex) {
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-        return ResponseEntity.badRequest().body(fieldErrors.toString());
+        List<FieldExceptionDTO> exceptions = fieldErrors.stream().map(fieldError ->
+                new FieldExceptionDTO(fieldError.getDefaultMessage(), fieldError.getField(), fieldError.getCode())
+        ).toList();
+        return ResponseEntity.badRequest().body(exceptions);
     }
 }

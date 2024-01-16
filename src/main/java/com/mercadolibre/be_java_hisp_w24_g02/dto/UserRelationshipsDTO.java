@@ -1,4 +1,4 @@
-package com.mercadolibre.be_java_hisp_w24_g02.dao;
+package com.mercadolibre.be_java_hisp_w24_g02.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mercadolibre.be_java_hisp_w24_g02.serializer.UserRelationshipsDTOSerializer;

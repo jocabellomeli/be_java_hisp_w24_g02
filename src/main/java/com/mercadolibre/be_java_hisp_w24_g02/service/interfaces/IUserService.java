@@ -6,6 +6,10 @@ public interface IUserService {
 
     UserRelationshipsDTO getUserFollowers(Integer userId);
 
+
+    UserRelationshipsDTO followUser(Integer userId, Integer userIdToFollow);
+
     UserRelationshipsDTO getUserFollowed(Integer userId);
+
 
 }

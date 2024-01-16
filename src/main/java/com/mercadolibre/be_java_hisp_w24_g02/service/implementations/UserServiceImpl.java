@@ -148,7 +148,7 @@ public class UserServiceImpl implements IUserService {
                     posts
             );
         }
-        return null;
+        throw new NotFoundException("User not found");
     }
 
     public List<Integer> getIdsFollowed(User user) {

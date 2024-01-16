@@ -10,6 +10,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,13 +38,13 @@ public class PostRepositoryImpl implements IPostRepository {
 
     @Override
     public Optional<Post> findById(Integer id) {
-        return this.posts.stream().filter(post -> Objects.equals(post.getId(), id)).findFirst();
+        return this.posts.stream().filter(post -> Objects.equals(post.getPostId(), id)).findFirst();
     }
 
     @Override
     public Post update(Post post) {
         this.posts = this.posts.stream().map(currentPost -> {
-            if(Objects.equals(post.getId(), currentPost.getId())){
+            if(Objects.equals(post.getPostId(), currentPost.getPostId())){
                 return post;
             }
 
@@ -55,7 +56,7 @@ public class PostRepositoryImpl implements IPostRepository {
 
     @Override
     public void delete(Integer id) {
-        this.posts = this.posts.stream().filter(post -> !Objects.equals(post.getId(), id)).toList();
+        this.posts = this.posts.stream().filter(post -> !Objects.equals(post.getPostId(), id)).toList();
     }
 
     private List<Post> loadData(){
@@ -77,7 +78,9 @@ public class PostRepositoryImpl implements IPostRepository {
 
     @Override
     public List<Post> getPostOfFollowedList(List<Integer> usersIds) {
-        return posts.stream().filter(post -> usersIds.contains(post.getUserId())
+        LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+
+        return posts.stream().filter(post -> usersIds.contains(post.getUserId()) && post.getDate().isAfter(twoWeeksAgo)
         ).collect(Collectors.toList());
     }
 

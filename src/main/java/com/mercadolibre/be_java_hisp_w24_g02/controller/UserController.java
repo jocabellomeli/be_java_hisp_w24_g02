@@ -42,11 +42,4 @@ public class UserController {
         return ResponseEntity.ok("Usuario seguido exitosamente");
     }
 
-
-    @GetMapping("products/followed/{userId}/list")
-    public ResponseEntity<UserFollowedsPostsDTO> getUserFollowed(@PathVariable Integer userId) {
-        UserFollowedsPostsDTO userServiceUserFollowed = userService.getFollowedPost(userId);
-        return ResponseEntity.ok(userServiceUserFollowed);
-    }
-
 }

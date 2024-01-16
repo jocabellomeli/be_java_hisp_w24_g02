@@ -1,6 +1,7 @@
 package com.mercadolibre.be_java_hisp_w24_g02.service.implementations;
 
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserBasicInfoDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.User;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.NotFoundException;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +44,16 @@ public class UserServiceImpl implements IUserService {
 
         return getUserRelationshipsDTO(user, followed, false);
 
+    }
+
+    @Override
+    public UserFollowersCountDTO getUserFollowersCount(Integer userId) {
+        Optional<User> user = this.userRepository.findById(userId);
+        if (user.isEmpty()){
+            throw new NotFoundException("user id"+ userId + "not fount");
+        }
+        Integer followersCount = user.get().getFollowers().size();
+        return new UserFollowersCountDTO(user.get().getId(),user.get().getName(),followersCount);
     }
 
     private UserRelationshipsDTO getUserRelationshipsDTO(User user, List<UserBasicInfoDTO> relationShipList, boolean isFollowers) {

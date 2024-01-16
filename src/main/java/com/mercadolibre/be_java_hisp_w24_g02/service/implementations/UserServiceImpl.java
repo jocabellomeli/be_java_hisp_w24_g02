@@ -72,6 +72,32 @@ public class UserServiceImpl implements IUserService {
         );
     }
 
+    @Override
+    public void followUser(Integer userId, Integer userIdToFollow) {
+
+        User follower = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found: " + userId));
+
+        User userToFollow = userRepository.findById(userIdToFollow)
+                .orElseThrow(() -> new NotFoundException("User to follow not found: " + userIdToFollow));
+
+
+        if (follower.getFollowed().contains(userToFollow)  && userToFollow.getFollowers().contains(follower)) {
+            throw new IllegalArgumentException("Ya estás siguiendo a este usuario: " + userIdToFollow);
+        }
+
+        follower.getFollowed().add(userToFollow);
+        userToFollow.getFollowers().add(follower);
+
+        List<UserBasicInfoDTO> followeds = follower.getFollowed()
+                        .stream()
+                        .map(followed -> new UserBasicInfoDTO(followed.getId(), followed.getName()))
+                        .toList();
+
+        userRepository.update(follower);
+        userRepository.update(userToFollow);
+    }
+
     private User getUser(Integer userId) {
         return userRepository.findById(userId)
                 .orElseThrow(

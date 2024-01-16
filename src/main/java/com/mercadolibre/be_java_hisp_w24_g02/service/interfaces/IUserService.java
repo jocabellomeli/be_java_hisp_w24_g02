@@ -5,8 +5,10 @@ import org.apache.coyote.BadRequestException;
 
 public interface IUserService {
 
-    UserRelationshipsDTO getUserFollowers(Integer userId, String order) throws BadRequestException;
+    UserRelationshipsDTO getUserFollowers(Integer userId, String order);
 
-    UserRelationshipsDTO getUserFollowed(Integer userId, String order) throws BadRequestException;
+    UserRelationshipsDTO getUserFollowed(Integer userId, String order);
+
+    void followUser(Integer userId, Integer userIdToFollow);
 
 }

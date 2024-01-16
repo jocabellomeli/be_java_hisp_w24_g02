@@ -9,6 +9,7 @@ import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -18,7 +19,7 @@ public class UserServiceImpl implements IUserService {
     private final IUserRepository userRepository;
 
     @Override
-    public UserRelationshipsDTO getUserFollowers(Integer userId) {
+    public UserRelationshipsDTO getUserFollowers(Integer userId, String order) {
 
         User user = getUser(userId);
 
@@ -31,7 +32,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserRelationshipsDTO getUserFollowed(Integer userId) {
+    public UserRelationshipsDTO getUserFollowed(Integer userId, String order) {
 
         User user = getUser(userId);
 
@@ -42,6 +43,19 @@ public class UserServiceImpl implements IUserService {
 
         return getUserRelationshipsDTO(user, followed, false);
 
+    }
+
+    private List<UserBasicInfoDTO> orderList (List<UserBasicInfoDTO> list, String order){
+        if (order.equals("none")) {
+            return list;
+        }
+        if (order.equals("name_asc")) {
+            return list.stream().sorted(Comparator.comparing(UserBasicInfoDTO::userName)).toList();
+        }
+        if (order.equals("name_desc")) {
+            return list.stream().sorted(Comparator.comparing(UserBasicInfoDTO::userName).reversed()).toList();
+        }
+        throw new NotFoundException("Order not found");
     }
 
     private UserRelationshipsDTO getUserRelationshipsDTO(User user, List<UserBasicInfoDTO> relationShipList, boolean isFollowers) {

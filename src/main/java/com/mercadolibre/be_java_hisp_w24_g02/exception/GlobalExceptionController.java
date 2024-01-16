@@ -12,6 +12,6 @@ public class GlobalExceptionController {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionDAO> notFound(Exception e){
         ExceptionDAO exceptionDAO = new ExceptionDAO(e.getMessage());
-        return new ResponseEntity<ExceptionDAO>(exceptionDAO, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(exceptionDAO, HttpStatus.NOT_FOUND);
     }
 }

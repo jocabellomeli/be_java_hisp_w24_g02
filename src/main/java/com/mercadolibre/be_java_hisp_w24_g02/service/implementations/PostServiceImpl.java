@@ -1,6 +1,6 @@
 package com.mercadolibre.be_java_hisp_w24_g02.service.implementations;
 
-import com.mercadolibre.be_java_hisp_w24_g02.dao.CreatePostDAO;
+import com.mercadolibre.be_java_hisp_w24_g02.dao.CreatePostDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.Post;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.Product;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.NotFoundException;
@@ -19,15 +19,15 @@ public class PostServiceImpl implements IPostService {
     private IUserRepository userRepository;
 
     @Override
-    public Boolean createProductPost(CreatePostDAO createPostDAO) {
-        if(this.userRepository.findById(createPostDAO.user_id()).isEmpty()){
-            throw new NotFoundException("user id "+ createPostDAO.user_id() + " not found");
+    public Boolean createProductPost(CreatePostDTO createPostDTO) {
+        if(this.userRepository.findById(createPostDTO.user_id()).isEmpty()){
+            throw new NotFoundException("user id "+ createPostDTO.user_id() + " not found");
         }
-        this.postRepository.save(this.transformCreatePostDAOToPostEntity(createPostDAO));
+        this.postRepository.save(this.transformCreatePostDAOToPostEntity(createPostDTO));
         return Boolean.TRUE;
     }
 
-    private Post transformCreatePostDAOToPostEntity(CreatePostDAO postDAO){
+    private Post transformCreatePostDAOToPostEntity(CreatePostDTO postDAO){
         Integer id = this.postRepository.findAll().size();
         return new Post(
                 id,

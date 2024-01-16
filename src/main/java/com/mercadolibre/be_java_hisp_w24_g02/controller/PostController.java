@@ -1,6 +1,6 @@
 package com.mercadolibre.be_java_hisp_w24_g02.controller;
 
-import com.mercadolibre.be_java_hisp_w24_g02.dao.CreatePostDAO;
+import com.mercadolibre.be_java_hisp_w24_g02.dao.CreatePostDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IPostService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,8 @@ public class PostController {
     private IPostService postService;
 
     @PostMapping("/post")
-    public ResponseEntity<?> addNewProductPost(@Valid @RequestBody CreatePostDAO createPostDAO){
-        this.postService.createProductPost(createPostDAO);
+    public ResponseEntity<?> addNewProductPost(@Valid @RequestBody CreatePostDTO createPostDTO){
+        this.postService.createProductPost(createPostDTO);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

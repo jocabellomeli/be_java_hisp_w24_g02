@@ -3,7 +3,8 @@
     "id": 1,
     "name": "Usuario 1",
     "followers": [],
-    "followed": []
+    "followed": [
+    ]
   },
   {
     "id": 2,

@@ -1,5 +1,6 @@
 package com.mercadolibre.be_java_hisp_w24_g02.controller;
 
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowedsPostsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IUserService;
 import org.apache.coyote.BadRequestException;
@@ -32,5 +33,11 @@ public class UserController {
         return ResponseEntity.ok("Usuario seguido exitosamente");
     }
 
+
+    @GetMapping("products/followed/{userId}/list")
+    public ResponseEntity<UserFollowedsPostsDTO> getUserFollowed(@PathVariable Integer userId) {
+        UserFollowedsPostsDTO userServiceUserFollowed = userService.getFollowedPost(userId);
+        return ResponseEntity.ok(userServiceUserFollowed);
+    }
 
 }

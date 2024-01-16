@@ -8,10 +8,17 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 public class User {
     private Integer id;
     private String name;
     private List<User> followers;
     private List<User> followed;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

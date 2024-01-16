@@ -19,4 +19,10 @@ public class UserController {
         return ResponseEntity.ok(userRelationshipsDTO);
     }
 
+    @GetMapping("/users/{userId}/followed/list")
+    public ResponseEntity<UserRelationshipsDTO> getUserFollowed(@PathVariable Integer userId) {
+        UserRelationshipsDTO userRelationshipsDTO = userService.getUserFollowed(userId);
+        return ResponseEntity.ok(userRelationshipsDTO);
+    }
+
 }

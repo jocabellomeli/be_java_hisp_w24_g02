@@ -1,7 +1,7 @@
 package com.mercadolibre.be_java_hisp_w24_g02.service.implementations;
 
-import com.mercadolibre.be_java_hisp_w24_g02.dao.UserBasicInfoDTO;
-import com.mercadolibre.be_java_hisp_w24_g02.dao.UserRelationshipsDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserBasicInfoDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.User;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces.IUserRepository;

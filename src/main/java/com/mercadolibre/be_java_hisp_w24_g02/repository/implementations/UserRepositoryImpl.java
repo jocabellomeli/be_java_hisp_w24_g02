@@ -28,7 +28,7 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public List<User> findAll() {
-        return null;
+        return this.users;
     }
 
     @Override

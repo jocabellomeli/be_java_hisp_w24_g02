@@ -37,8 +37,17 @@ public class UserRepositoryImpl implements IUserRepository {
     }
 
     @Override
-    public User update(User user) {
-        return null;
+    public User update(User user)
+    {
+        users = users.stream().map(user1 -> {
+            if (user1.getId().equals(user.getId())) {
+                return user;
+            } else {
+                return user1;
+            }
+        }).toList();
+
+        return user;
     }
 
     @Override

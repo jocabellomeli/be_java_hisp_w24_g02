@@ -1,5 +1,6 @@
 package com.mercadolibre.be_java_hisp_w24_g02.controller;
 
+import com.mercadolibre.be_java_hisp_w24_g02.dto.FollowUserDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IUserService;
 import org.apache.coyote.BadRequestException;
@@ -20,6 +21,13 @@ public class UserController {
         return ResponseEntity.ok(userRelationshipsDTO);
     }
 
+    @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
+    public ResponseEntity<String> unFollowUser(@PathVariable Integer userId, @PathVariable Integer userIdToUnfollow) {
+        FollowUserDTO followUserDTO = new FollowUserDTO(userId, userIdToUnfollow);
+        this.userService.unfollowUser(followUserDTO);
+        return ResponseEntity.ok("Usuario seguido exitosamente");
+    }
+    
     @GetMapping("/{userId}/followed/list")
     public ResponseEntity<UserRelationshipsDTO> getUserFollowed(@PathVariable Integer userId, @RequestParam(required = false, defaultValue = "none") String order) throws BadRequestException {
         UserRelationshipsDTO userRelationshipsDTO = userService.getUserFollowed(userId, order);
@@ -28,7 +36,8 @@ public class UserController {
 
     @PostMapping("/{userId}/follow/{userIdToFollow}")
     public ResponseEntity<String> followUser(@PathVariable Integer userId, @PathVariable Integer userIdToFollow) {
-        userService.followUser(userId, userIdToFollow);
+        FollowUserDTO followUserDTO = new FollowUserDTO(userId, userIdToFollow);
+        userService.followUser(followUserDTO);
         return ResponseEntity.ok("Usuario seguido exitosamente");
     }
 

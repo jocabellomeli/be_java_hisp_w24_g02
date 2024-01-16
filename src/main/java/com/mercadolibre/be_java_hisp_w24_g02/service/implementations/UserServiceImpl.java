@@ -1,5 +1,6 @@
 package com.mercadolibre.be_java_hisp_w24_g02.service.implementations;
 
+import com.mercadolibre.be_java_hisp_w24_g02.dto.FollowUserDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserBasicInfoDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.User;
@@ -73,17 +74,32 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void followUser(Integer userId, Integer userIdToFollow) {
+    public void unfollowUser(FollowUserDTO followUserDTO) {
+        User user = this.userRepository.findById(followUserDTO.userId())
+                .orElseThrow(() -> new NotFoundException("User " + followUserDTO.userId() + " not found"));
+        User userToUnfollow = this.userRepository.findById(followUserDTO.userIdToUnfollow())
+                .orElseThrow(() -> new NotFoundException("User to unfollow " + followUserDTO.userIdToUnfollow() + " not found"));
+        
 
-        User follower = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found: " + userId));
+        user.setFollowed(this.filterFollowed(user, userToUnfollow));
+        userToUnfollow.setFollowers(this.filterFollowers(user, userToUnfollow));
 
-        User userToFollow = userRepository.findById(userIdToFollow)
-                .orElseThrow(() -> new NotFoundException("User to follow not found: " + userIdToFollow));
+        this.userRepository.update(user);
+        this.userRepository.update(userToUnfollow);
+    }
+
+    @Override
+    public void followUser(FollowUserDTO followUserDTO) {
+
+        User follower = userRepository.findById(followUserDTO.userId())
+                .orElseThrow(() -> new NotFoundException("User not found: " + followUserDTO.userId()));
+
+        User userToFollow = userRepository.findById(followUserDTO.userIdToUnfollow())
+                .orElseThrow(() -> new NotFoundException("User to follow not found: " + followUserDTO.userIdToUnfollow()));
 
 
         if (follower.getFollowed().contains(userToFollow)  && userToFollow.getFollowers().contains(follower)) {
-            throw new IllegalArgumentException("Ya estás siguiendo a este usuario: " + userIdToFollow);
+            throw new IllegalArgumentException("Ya estás siguiendo a este usuario: " + followUserDTO.userIdToUnfollow());
         }
 
         follower.getFollowed().add(userToFollow);
@@ -96,6 +112,18 @@ public class UserServiceImpl implements IUserService {
 
         userRepository.update(follower);
         userRepository.update(userToFollow);
+    }
+
+    private List<User> filterFollowed(User user, User userToUnFollowed){
+        return user.getFollowed().stream().filter(
+                userFollowed -> !userFollowed.getId().equals(userToUnFollowed.getId())
+        ).toList();
+    }
+
+    private List<User> filterFollowers(User user, User userToUnFollow){
+        return userToUnFollow.getFollowers().stream().filter(
+                userFollowed -> !userFollowed.getId().equals(user.getId())
+        ).toList();
     }
 
     private User getUser(Integer userId) {

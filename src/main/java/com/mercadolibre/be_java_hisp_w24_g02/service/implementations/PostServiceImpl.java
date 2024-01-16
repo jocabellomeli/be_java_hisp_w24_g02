@@ -1,6 +1,48 @@
 package com.mercadolibre.be_java_hisp_w24_g02.service.implementations;
 
+import com.mercadolibre.be_java_hisp_w24_g02.dao.CreatePostDAO;
+import com.mercadolibre.be_java_hisp_w24_g02.entity.Post;
+import com.mercadolibre.be_java_hisp_w24_g02.entity.Product;
+import com.mercadolibre.be_java_hisp_w24_g02.exception.NotFoundException;
+import com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces.IPostRepository;
+import com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces.IUserRepository;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IPostService;
+import com.mercadolibre.be_java_hisp_w24_g02.util.ValidateDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PostServiceImpl implements IPostService {
+    @Autowired
+    private IPostRepository postRepository;
+    @Autowired
+    private IUserRepository userRepository;
+
+    @Override
+    public Boolean createProductPost(CreatePostDAO createPostDAO) {
+        if(this.userRepository.findById(createPostDAO.user_id()).isEmpty()){
+            throw new NotFoundException("user id "+ createPostDAO.user_id() + " not found");
+        }
+        this.postRepository.save(this.transformCreatePostDAOToPostEntity(createPostDAO));
+        return Boolean.TRUE;
+    }
+
+    private Post transformCreatePostDAOToPostEntity(CreatePostDAO postDAO){
+        Integer id = this.postRepository.findAll().size();
+        return new Post(
+                id,
+                postDAO.user_id(),
+                ValidateDate.validateDateString(postDAO.date(), "dd-MM-yyyy"),
+                new Product(
+                        postDAO.product().product_id(),
+                        postDAO.product().product_name(),
+                        postDAO.product().type(),
+                        postDAO.product().brand(),
+                        postDAO.product().color(),
+                        postDAO.product().notes()
+                ),
+                postDAO.category(),
+                postDAO.price()
+        );
+    }
 }

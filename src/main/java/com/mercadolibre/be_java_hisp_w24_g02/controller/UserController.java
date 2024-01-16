@@ -24,15 +24,16 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}/unfollow/{userIdToUnfollow}")
-    public ResponseEntity<?> unFollowUser(@PathVariable Integer userId, @PathVariable Integer userIdToUnfollow) {
+    public ResponseEntity<String> unFollowUser(@PathVariable Integer userId, @PathVariable Integer userIdToUnfollow) {
         FollowUserDTO followUserDTO = new FollowUserDTO(userId, userIdToUnfollow);
         this.userService.unfollowUser(followUserDTO);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok("Usuario seguido exitosamente");
     }
 
     @PostMapping("/users/{userId}/follow/{userIdToFollow}")
     public ResponseEntity<String> followUser(@PathVariable Integer userId, @PathVariable Integer userIdToFollow) {
-        userService.followUser(userId, userIdToFollow);
+        FollowUserDTO followUserDTO = new FollowUserDTO(userId, userIdToFollow);
+        userService.followUser(followUserDTO);
         return ResponseEntity.ok("Usuario seguido exitosamente");
     }
 

@@ -6,8 +6,8 @@ import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 public interface IUserService {
 
     UserRelationshipsDTO getUserFollowers(Integer userId);
-    public Boolean unfollowUser(FollowUserDTO followUserDTO);
-    UserRelationshipsDTO followUser(Integer userId, Integer userIdToFollow);
+    void unfollowUser(FollowUserDTO followUserDTO);
+    UserRelationshipsDTO followUser(FollowUserDTO followUserDTO);
     UserRelationshipsDTO getUserFollowed(Integer userId);
 
 

@@ -55,7 +55,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Boolean unfollowUser(FollowUserDTO followUserDTO) {
+    public void unfollowUser(FollowUserDTO followUserDTO) {
         User user = this.userRepository.findById(followUserDTO.userId())
                 .orElseThrow(() -> new NotFoundException("User " + followUserDTO.userId() + " not found"));
         User userToUnfollow = this.userRepository.findById(followUserDTO.userIdToUnfollow())
@@ -67,21 +67,20 @@ public class UserServiceImpl implements IUserService {
         user.setFollowers(usersNewFollowers);
 
         this.userRepository.update(user);
-
-        return Boolean.TRUE;
     }
 
-    public UserRelationshipsDTO followUser(Integer userId, Integer userIdToFollow) {
+    @Override
+    public UserRelationshipsDTO followUser(FollowUserDTO followUserDTO) {
 
-        User follower = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found: " + userId));
+        User follower = userRepository.findById(followUserDTO.userId())
+                .orElseThrow(() -> new NotFoundException("User not found: " + followUserDTO.userId()));
 
-        User userToFollow = userRepository.findById(userIdToFollow)
-                .orElseThrow(() -> new NotFoundException("User to follow not found: " + userIdToFollow));
+        User userToFollow = userRepository.findById(followUserDTO.userIdToUnfollow())
+                .orElseThrow(() -> new NotFoundException("User to follow not found: " + followUserDTO.userIdToUnfollow()));
 
 
         if (follower.getFollowed().contains(userToFollow)  && userToFollow.getFollowers().contains(follower)) {
-            throw new IllegalArgumentException("Ya estás siguiendo a este usuario: " + userIdToFollow);
+            throw new IllegalArgumentException("Ya estás siguiendo a este usuario: " + followUserDTO.userIdToUnfollow());
         }
 
         follower.getFollowed().add(userToFollow);

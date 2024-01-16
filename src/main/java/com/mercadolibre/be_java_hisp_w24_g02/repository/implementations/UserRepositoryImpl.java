@@ -33,7 +33,7 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public Optional<User> findById(Integer id) {
-        return Optional.empty();
+        return users.stream().filter(user -> user.getId().equals(id)).findFirst();
     }
 
     @Override
@@ -54,9 +54,30 @@ public class UserRepositoryImpl implements IUserRepository {
         try {
             file = ResourceUtils.getFile("classpath:json/users.json");
             data = objectMapper.readValue(file, typeRef);
+            randomizeUsers(data);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return data;
     }
+
+    private void randomizeUsers(ArrayList<User> data) {
+        for (User user : data) {
+            user.setFollowers(randomizeRelationships(data, user.getId()));
+            user.setFollowed(randomizeRelationships(data, user.getId()));
+        }
+    }
+
+    private List<User> randomizeRelationships(ArrayList<User> data, Integer... excludeIds) {
+        List<User> randomUsers = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            User randomUser = data.get((int) (Math.random() * data.size()));
+            //Que toque 2 veces el mismo usuario y que no sea el mismo usuario que el que se esta creando
+            if (!randomUsers.contains(randomUser) && !randomUser.getId().equals(excludeIds[0])) {
+                randomUsers.add(randomUser);
+            }
+        }
+        return randomUsers;
+    }
+
 }

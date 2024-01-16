@@ -1,34 +1,51 @@
 package com.mercadolibre.be_java_hisp_w24_g02.controller;
 
+
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowersCountDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.FollowUserDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IUserService;
-import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
+@RequestMapping("/users")
 public class UserController {
 
-    private final IUserService userService;
-    @GetMapping("/users/{userId}/followers/list")
-    public ResponseEntity<UserRelationshipsDTO> getUserFollowers(@PathVariable Integer userId) {
-        UserRelationshipsDTO userRelationshipsDTO = userService.getUserFollowers(userId);
+    @Autowired
+    private IUserService userService;
+
+    @GetMapping("/{userId}/followers/list")
+    public ResponseEntity<UserRelationshipsDTO> getUserFollowers(@PathVariable Integer userId, @RequestParam(required = false, defaultValue = "none") String order) throws BadRequestException {
+        UserRelationshipsDTO userRelationshipsDTO = userService.getUserFollowers(userId, order);
         return ResponseEntity.ok(userRelationshipsDTO);
     }
 
-    @GetMapping("/users/{userId}/followed/list")
-    public ResponseEntity<UserRelationshipsDTO> getUserFollowed(@PathVariable Integer userId) {
-        UserRelationshipsDTO userRelationshipsDTO = userService.getUserFollowed(userId);
+    @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
+    public ResponseEntity<String> unFollowUser(@PathVariable Integer userId, @PathVariable Integer userIdToUnfollow) {
+        FollowUserDTO followUserDTO = new FollowUserDTO(userId, userIdToUnfollow);
+        this.userService.unfollowUser(followUserDTO);
+        return ResponseEntity.ok("Usuario seguido exitosamente");
+    }
+    
+    @GetMapping("/{userId}/followed/list")
+    public ResponseEntity<UserRelationshipsDTO> getUserFollowed(@PathVariable Integer userId, @RequestParam(required = false, defaultValue = "none") String order) throws BadRequestException {
+        UserRelationshipsDTO userRelationshipsDTO = userService.getUserFollowed(userId, order);
         return ResponseEntity.ok(userRelationshipsDTO);
     }
+
 
     @GetMapping("/users/{userId}/followers/count")
     public ResponseEntity<UserFollowersCountDTO>getUserFollowersCount(@PathVariable Integer userId){
         UserFollowersCountDTO userFollowersCountDTO = userService.getUserFollowersCount(userId);
         return ResponseEntity.ok(userFollowersCountDTO);
+    }
+    @PostMapping("/{userId}/follow/{userIdToFollow}")
+    public ResponseEntity<String> followUser(@PathVariable Integer userId, @PathVariable Integer userIdToFollow) {
+        FollowUserDTO followUserDTO = new FollowUserDTO(userId, userIdToFollow);
+        userService.followUser(followUserDTO);
+        return ResponseEntity.ok("Usuario seguido exitosamente");
     }
 }

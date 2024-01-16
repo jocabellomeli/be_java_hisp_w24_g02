@@ -79,17 +79,10 @@ public class UserServiceImpl implements IUserService {
                 .orElseThrow(() -> new NotFoundException("User " + followUserDTO.userId() + " not found"));
         User userToUnfollow = this.userRepository.findById(followUserDTO.userIdToUnfollow())
                 .orElseThrow(() -> new NotFoundException("User to unfollow " + followUserDTO.userIdToUnfollow() + " not found"));
+        
 
-        List<User> usersNewFollowed = user.getFollowers().stream().filter(
-                userFollowed -> !userFollowed.getId().equals(userToUnfollow.getId())
-        ).toList();
-
-        List<User> usersNewFollowers = userToUnfollow.getFollowers().stream().filter(
-                userFollower -> !userFollower.getId().equals(user.getId())
-        ).toList();
-
-        user.setFollowed(usersNewFollowed);
-        userToUnfollow.setFollowers(usersNewFollowers);
+        user.setFollowed(this.filterFollowed(user, userToUnfollow));
+        userToUnfollow.setFollowers(this.filterFollowers(user, userToUnfollow));
 
         this.userRepository.update(user);
         this.userRepository.update(userToUnfollow);
@@ -119,6 +112,18 @@ public class UserServiceImpl implements IUserService {
 
         userRepository.update(follower);
         userRepository.update(userToFollow);
+    }
+
+    private List<User> filterFollowed(User user, User userToUnFollowed){
+        return user.getFollowed().stream().filter(
+                userFollowed -> !userFollowed.getId().equals(userToUnFollowed.getId())
+        ).toList();
+    }
+
+    private List<User> filterFollowers(User user, User userToUnFollow){
+        return userToUnFollow.getFollowers().stream().filter(
+                userFollowed -> !userFollowed.getId().equals(user.getId())
+        ).toList();
     }
 
     private User getUser(Integer userId) {

@@ -3,10 +3,9 @@ package com.mercadolibre.be_java_hisp_w24_g02.serializer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.mercadolibre.be_java_hisp_w24_g02.dao.UserRelationshipsDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 
 import java.io.IOException;
-import java.util.List;
 
 public class UserRelationshipsDTOSerializer extends StdSerializer<UserRelationshipsDTO> {
 

@@ -28,7 +28,7 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public List<User> findAll() {
-        return null;
+        return this.users;
     }
 
     @Override
@@ -72,21 +72,32 @@ public class UserRepositoryImpl implements IUserRepository {
 
     private void randomizeUsers(ArrayList<User> data) {
         for (User user : data) {
-            user.setFollowers(randomizeRelationships(data, user.getId()));
-            user.setFollowed(randomizeRelationships(data, user.getId()));
+            user.setFollowers(new ArrayList<>());
+            user.setFollowed(new ArrayList<>());
+        }
+
+        for (User user : data) {
+            randomizeRelationships(data, user);
         }
     }
 
-    private List<User> randomizeRelationships(ArrayList<User> data, Integer... excludeIds) {
-        List<User> randomUsers = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            User randomUser = data.get((int) (Math.random() * data.size()));
-            //Que toque 2 veces el mismo usuario y que no sea el mismo usuario que el que se esta creando
-            if (!randomUsers.contains(randomUser) && !randomUser.getId().equals(excludeIds[0])) {
-                randomUsers.add(randomUser);
+    private void randomizeRelationships(ArrayList<User> data, User user) {
+        while (user.getFollowed().size() < 5) {
+            User randomUser = getRandomUser(data, user.getId());
+
+            if (!user.getFollowed().contains(randomUser)) {
+                user.getFollowed().add(randomUser);
+                randomUser.getFollowers().add(user);
             }
         }
-        return randomUsers;
+    }
+
+    private User getRandomUser(ArrayList<User> data, Integer excludeId) {
+        User randomUser;
+        do {
+            randomUser = data.get((int) (Math.random() * data.size()));
+        } while (randomUser.getId().equals(excludeId));
+        return randomUser;
     }
 
 }

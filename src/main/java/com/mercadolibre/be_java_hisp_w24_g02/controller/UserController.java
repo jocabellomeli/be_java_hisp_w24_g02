@@ -1,7 +1,8 @@
 package com.mercadolibre.be_java_hisp_w24_g02.controller;
 
-import com.mercadolibre.be_java_hisp_w24_g02.dao.UserRelationshipsDTO;
+
 import com.mercadolibre.be_java_hisp_w24_g02.exception.NotFoundException;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,16 +27,15 @@ public class UserController {
 
     @PostMapping("/users/{userId}/follow/{userIdToFollow}")
     public ResponseEntity<String> followUser(@PathVariable Integer userId, @PathVariable Integer userIdToFollow) {
-        try {
-            userService.followUser(userId, userIdToFollow);
-            return ResponseEntity.ok("Usuario seguido exitosamente");
-
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        userService.followUser(userId, userIdToFollow);
+        return ResponseEntity.ok("Usuario seguido exitosamente");
     }
 
+
+    @GetMapping("/users/{userId}/followed/list")
+    public ResponseEntity<UserRelationshipsDTO> getUserFollowed(@PathVariable Integer userId) {
+        UserRelationshipsDTO userRelationshipsDTO = userService.getUserFollowed(userId);
+        return ResponseEntity.ok(userRelationshipsDTO);
+    }
 
 }

@@ -1,6 +1,6 @@
 package com.mercadolibre.be_java_hisp_w24_g02.exception;
 
-import com.mercadolibre.be_java_hisp_w24_g02.dto.ExceptionDAO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.ExceptionDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.FieldExceptionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +15,14 @@ import java.util.List;
 public class GlobalExceptionController {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ExceptionDAO> notFound(Exception e){
-        ExceptionDAO exceptionDAO = new ExceptionDAO(e.getMessage());
+    public ResponseEntity<ExceptionDTO> notFound(Exception e){
+        ExceptionDTO exceptionDAO = new ExceptionDTO(e.getMessage());
         return new ResponseEntity<>(exceptionDAO, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ExceptionDAO> badRequest(BadRequestException e){
-        ExceptionDAO exceptionDAO = new ExceptionDAO(e.getMessage());
+    public ResponseEntity<ExceptionDTO> badRequest(BadRequestException e){
+        ExceptionDTO exceptionDAO = new ExceptionDTO(e.getMessage());
         return new ResponseEntity<>(exceptionDAO, HttpStatus.BAD_REQUEST);
     }
 

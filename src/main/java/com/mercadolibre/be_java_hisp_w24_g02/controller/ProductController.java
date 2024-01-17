@@ -16,6 +16,12 @@ public class ProductController {
     @Autowired
     private UserServiceImpl userService;
 
+    /**
+     * This method is used to get the followed posts of a user
+     * @param userId the id of the user
+     * @param order the order of the posts
+     * @return a list of posts
+     */
     @GetMapping("products/followed/{userId}/list")
     public ResponseEntity<UserFollowedsPostsDTO> getUserFollowed(@PathVariable Integer userId, @RequestParam(required = false, defaultValue = "none") String order) throws BadRequestException {
         UserFollowedsPostsDTO userServiceUserFollowed = userService.getFollowedPost(userId,order);

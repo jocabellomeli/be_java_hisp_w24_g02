@@ -25,7 +25,7 @@ public class UserController {
     public ResponseEntity<String> unFollowUser(@PathVariable Integer userId, @PathVariable Integer userIdToUnfollow) {
         FollowUserDTO followUserDTO = new FollowUserDTO(userId, userIdToUnfollow);
         this.userService.unfollowUser(followUserDTO);
-        return ResponseEntity.ok("Usuario seguido exitosamente");
+        return ResponseEntity.ok("Usuario se dejo de seguir exitosamente");
     }
     
     @GetMapping("/{userId}/followed/list")

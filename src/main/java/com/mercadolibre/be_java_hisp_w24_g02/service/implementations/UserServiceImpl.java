@@ -4,12 +4,14 @@ import com.mercadolibre.be_java_hisp_w24_g02.dto.FollowUserDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserBasicInfoDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowedsPostsDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.entity.Post;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.User;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.BadRequestException;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.NotFoundException;
+import com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces.IPostRepository;
 import com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces.IUserRepository;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IUserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,8 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IUserRepository userRepository;
+    @Autowired
+    private IPostRepository postRepository;
 
     @Override
     public UserRelationshipsDTO getUserFollowers(Integer userId, String order){
@@ -144,4 +148,23 @@ public class UserServiceImpl implements IUserService {
                         () -> new NotFoundException("User not found")
                 );
     }
+    
+    public UserFollowedsPostsDTO getFollowedPost(Integer userId){
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isPresent()){
+            List<Integer> getIdsFollowed = getIdsFollowed(user.get());
+            List<Post> posts = postRepository.getPostOfFollowedList(getIdsFollowed);
+            return new UserFollowedsPostsDTO(
+                    user.get().getId(),
+                    posts
+            );
+        }
+        throw new NotFoundException("User not found");
+    }
+
+    public List<Integer> getIdsFollowed(User user) {
+        return user.getFollowed().stream().map(User::getId).toList();
+    }
+
+
 }

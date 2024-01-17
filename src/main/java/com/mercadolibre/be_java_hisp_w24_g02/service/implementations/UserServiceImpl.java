@@ -2,6 +2,7 @@ package com.mercadolibre.be_java_hisp_w24_g02.service.implementations;
 
 import com.mercadolibre.be_java_hisp_w24_g02.dto.FollowUserDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserBasicInfoDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.User;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.BadRequestException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -51,6 +53,16 @@ public class UserServiceImpl implements IUserService {
 
     }
 
+
+    @Override
+    public UserFollowersCountDTO getUserFollowersCount(Integer userId) {
+        Optional<User> user = this.userRepository.findById(userId);
+        if (user.isEmpty()){
+            throw new NotFoundException("user id"+ userId + "not fount");
+        }
+        Integer followersCount = user.get().getFollowers().size();
+        return new UserFollowersCountDTO(user.get().getId(),user.get().getName(),followersCount);
+}
     private List<UserBasicInfoDTO> orderList (List<UserBasicInfoDTO> list, String order) {
         if (order.equals("none")) {
             return list;
@@ -79,7 +91,7 @@ public class UserServiceImpl implements IUserService {
                 .orElseThrow(() -> new NotFoundException("User " + followUserDTO.userId() + " not found"));
         User userToUnfollow = this.userRepository.findById(followUserDTO.userIdToUnfollow())
                 .orElseThrow(() -> new NotFoundException("User to unfollow " + followUserDTO.userIdToUnfollow() + " not found"));
-        
+
 
         user.setFollowed(this.filterFollowed(user, userToUnfollow));
         userToUnfollow.setFollowers(this.filterFollowers(user, userToUnfollow));

@@ -1,5 +1,7 @@
 package com.mercadolibre.be_java_hisp_w24_g02.controller;
 
+
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.FollowUserDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IUserService;
@@ -34,12 +36,16 @@ public class UserController {
         return ResponseEntity.ok(userRelationshipsDTO);
     }
 
+
+    @GetMapping("/users/{userId}/followers/count")
+    public ResponseEntity<UserFollowersCountDTO>getUserFollowersCount(@PathVariable Integer userId){
+        UserFollowersCountDTO userFollowersCountDTO = userService.getUserFollowersCount(userId);
+        return ResponseEntity.ok(userFollowersCountDTO);
+    }
     @PostMapping("/{userId}/follow/{userIdToFollow}")
     public ResponseEntity<String> followUser(@PathVariable Integer userId, @PathVariable Integer userIdToFollow) {
         FollowUserDTO followUserDTO = new FollowUserDTO(userId, userIdToFollow);
         userService.followUser(followUserDTO);
         return ResponseEntity.ok("Usuario seguido exitosamente");
     }
-
-
 }

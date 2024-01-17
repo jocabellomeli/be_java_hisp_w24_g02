@@ -2,7 +2,7 @@
   {
     "post_id": 1,
     "user_id": 1,
-    "date": "2024-01-15",
+    "date": "2024-05-15",
     "product": {
       "product_id": 1001,
       "product_name": "Laptop XYZ",
@@ -32,7 +32,7 @@
   {
     "post_id": 3,
     "user_id": 3,
-    "date": "2024-03-10",
+    "date": "2024-06-10",
     "product": {
       "product_id": 1003,
       "product_name": "Cámara DSLR 123",
@@ -47,7 +47,7 @@
   {
     "post_id": 4,
     "user_id": 4,
-    "date": "2024-04-05",
+    "date": "2024-07-05",
     "product": {
       "product_id": 1004,
       "product_name": "Tablet XYZ",
@@ -62,7 +62,7 @@
   {
     "post_id": 5,
     "user_id": 5,
-    "date": "2024-05-20",
+    "date": "2024-11-20",
     "product": {
       "product_id": 1005,
       "product_name": "Auriculares ABC",
@@ -77,7 +77,7 @@
   {
     "post_id": 6,
     "user_id": 6,
-    "date": "2024-06-15",
+    "date": "2024-09-15",
     "product": {
       "product_id": 1006,
       "product_name": "Impresora XYZ",
@@ -92,7 +92,7 @@
   {
     "post_id": 7,
     "user_id": 7,
-    "date": "2024-07-02",
+    "date": "2024-01-02",
     "product": {
       "product_id": 1007,
       "product_name": "Teclado ABC",
@@ -107,7 +107,7 @@
   {
     "post_id": 8,
     "user_id": 8,
-    "date": "2024-08-18",
+    "date": "2024-12-18",
     "product": {
       "product_id": 1008,
       "product_name": "Monitor XYZ",
@@ -122,7 +122,7 @@
   {
     "post_id": 9,
     "user_id": 9,
-    "date": "2024-09-12",
+    "date": "2024-10-12",
     "product": {
       "product_id": 1009,
       "product_name": "Altavoces ABC",
@@ -137,7 +137,7 @@
   {
     "post_id": 10,
     "user_id": 10,
-    "date": "2024-10-05",
+    "date": "2024-10-20",
     "product": {
       "product_id": 1010,
       "product_name": "Reproductor de Blu-ray XYZ",

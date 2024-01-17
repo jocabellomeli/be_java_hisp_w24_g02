@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,8 +17,10 @@ public class ProductController {
     private UserServiceImpl userService;
 
     @GetMapping("products/followed/{userId}/list")
-    public ResponseEntity<UserFollowedsPostsDTO> getUserFollowed(@PathVariable Integer userId) throws BadRequestException {
-        UserFollowedsPostsDTO userServiceUserFollowed = userService.getFollowedPost(userId);
+    public ResponseEntity<UserFollowedsPostsDTO> getUserFollowed(@PathVariable Integer userId, @RequestParam(required = false, defaultValue = "none") String order) throws BadRequestException {
+        UserFollowedsPostsDTO userServiceUserFollowed = userService.getFollowedPost(userId,order);
         return ResponseEntity.ok(userServiceUserFollowed);
     }
+
+
 }

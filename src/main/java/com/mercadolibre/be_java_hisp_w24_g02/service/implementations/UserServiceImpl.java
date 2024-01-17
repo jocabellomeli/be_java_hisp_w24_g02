@@ -1,10 +1,6 @@
 package com.mercadolibre.be_java_hisp_w24_g02.service.implementations;
 
-import com.mercadolibre.be_java_hisp_w24_g02.dto.FollowUserDTO;
-import com.mercadolibre.be_java_hisp_w24_g02.dto.UserBasicInfoDTO;
-import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowersCountDTO;
-import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
-import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowedsPostsDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.*;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.Post;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.User;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.BadRequestException;
@@ -156,7 +152,7 @@ public class UserServiceImpl implements IUserService {
             List<Post> posts = postRepository.getPostOfFollowedList(getIdsFollowed);
             return new UserFollowedsPostsDTO(
                     user.get().getId(),
-                    posts
+                    posts.stream().map(this::convertPostsDTO).toList()
             );
         }
         throw new NotFoundException("User not found");
@@ -166,5 +162,41 @@ public class UserServiceImpl implements IUserService {
         return user.getFollowed().stream().map(User::getId).toList();
     }
 
+    public UserFollowedsPostsDTO orderByDate(Integer userId, String order){
+        UserFollowedsPostsDTO userFollowedsPostsDTO = getFollowedPost(userId);
+        if(userId == null){
+            throw new NotFoundException("User not found");
+        }
+        return new UserFollowedsPostsDTO(
+                userFollowedsPostsDTO.userId(),
+                orderListPost(userFollowedsPostsDTO, order)
+        );
+    }
+
+    private List<PostDto> orderListPost(UserFollowedsPostsDTO list, String order){
+        if (order.equals("date_asc")){
+            return list.posts().stream().sorted(Comparator.comparing(PostDto::date)).toList();
+        }
+        return list.posts().stream().sorted(Comparator.comparing(PostDto::date).reversed()).toList();
+    }
+
+    private PostDto convertPostsDTO(Post posts){
+        return new PostDto(posts.getPostId(),
+                            posts.getUserId(),
+                            posts.getDate(),
+                            posts.getProduct(),
+                            posts.getCategory(),
+                            posts.getPrice());
+    }
+
+    public UserFollowedsPostsDTO getFollowedPost(Integer userId, String order){
+        if (order.equals("none")) {
+            return getFollowedPost(userId);
+        }
+        if (order.equals("date_asc") || order.equals("date_desc")) {
+            return orderByDate(userId, order);
+        }
+        throw new BadRequestException("Invalid order");
+    }
 
 }

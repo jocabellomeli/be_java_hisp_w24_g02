@@ -29,7 +29,6 @@ public class PostServiceImpl implements IPostService {
             throw new NotFoundException("user id "+ createPostDTO.userId() + " not found");
         }
         this.postRepository.save(this.transformCreatePostDAOToPostEntity(createPostDTO));
-        System.out.println(this.postRepository.findAll());
     }
 
     /**

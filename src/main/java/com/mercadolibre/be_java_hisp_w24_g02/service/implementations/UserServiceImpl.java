@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -86,11 +87,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void unfollowUser(FollowUserDTO followUserDTO) {
+    public void unfollowUser(UpdateToRelationshipsDTO followUserDTO) {
         User user = this.userRepository.findById(followUserDTO.userId())
                 .orElseThrow(() -> new NotFoundException("User " + followUserDTO.userId() + " not found"));
-        User userToUnfollow = this.userRepository.findById(followUserDTO.userIdToUnfollow())
-                .orElseThrow(() -> new NotFoundException("User to unfollow " + followUserDTO.userIdToUnfollow() + " not found"));
+        User userToUnfollow = this.userRepository.findById(followUserDTO.userToUpdate())
+                .orElseThrow(() -> new NotFoundException("User to unfollow " + followUserDTO.userToUpdate() + " not found"));
 
 
         user.setFollowed(this.filterFollowed(user, userToUnfollow));
@@ -101,26 +102,21 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void followUser(FollowUserDTO followUserDTO) {
+    public void followUser(UpdateToRelationshipsDTO followUserDTO) {
 
         User follower = userRepository.findById(followUserDTO.userId())
                 .orElseThrow(() -> new NotFoundException("User not found: " + followUserDTO.userId()));
 
-        User userToFollow = userRepository.findById(followUserDTO.userIdToUnfollow())
-                .orElseThrow(() -> new NotFoundException("User to follow not found: " + followUserDTO.userIdToUnfollow()));
+        User userToFollow = userRepository.findById(followUserDTO.userToUpdate())
+                .orElseThrow(() -> new NotFoundException("User to follow not found: " + followUserDTO.userToUpdate()));
 
 
         if (follower.getFollowed().contains(userToFollow)  && userToFollow.getFollowers().contains(follower)) {
-            throw new IllegalArgumentException("Ya estás siguiendo a este usuario: " + followUserDTO.userIdToUnfollow());
+            throw new BadRequestException("Ya estás siguiendo a este usuario: " + followUserDTO.userToUpdate());
         }
 
         follower.getFollowed().add(userToFollow);
         userToFollow.getFollowers().add(follower);
-
-        List<UserBasicInfoDTO> followeds = follower.getFollowed()
-                        .stream()
-                        .map(followed -> new UserBasicInfoDTO(followed.getId(), followed.getName()))
-                        .toList();
 
         userRepository.update(follower);
         userRepository.update(userToFollow);
@@ -129,13 +125,13 @@ public class UserServiceImpl implements IUserService {
     private List<User> filterFollowed(User user, User userToUnFollowed){
         return user.getFollowed().stream().filter(
                 userFollowed -> !userFollowed.getId().equals(userToUnFollowed.getId())
-        ).toList();
+        ).collect(Collectors.toList());
     }
 
     private List<User> filterFollowers(User user, User userToUnFollow){
         return userToUnFollow.getFollowers().stream().filter(
                 userFollowed -> !userFollowed.getId().equals(user.getId())
-        ).toList();
+        ).collect(Collectors.toList());
     }
 
     private User getUser(Integer userId) {

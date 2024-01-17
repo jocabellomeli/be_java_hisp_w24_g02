@@ -20,8 +20,8 @@ public class UserRelationshipsDTOSerializer extends StdSerializer<UserRelationsh
     @Override
     public void serialize(UserRelationshipsDTO value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
-        gen.writeNumberField("userId", value.userId());
-        gen.writeStringField("userName", value.userName());
+        gen.writeNumberField("user_id", value.userId());
+        gen.writeStringField("user_name", value.userName());
 
         // Aquí decides el nombre de la clave
         String relationshipKey = value.isFollowers() ? "followers" : "followed";

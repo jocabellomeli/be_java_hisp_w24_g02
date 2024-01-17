@@ -22,9 +22,9 @@ public class PostRepositoryImpl implements IPostRepository {
     private List<Post> posts;
 
     public PostRepositoryImpl() {
-        System.out.println(loadData());
         this.posts = loadData();
     }
+
     @Override
     public Post save(Post post) {
         this.posts.add(post);

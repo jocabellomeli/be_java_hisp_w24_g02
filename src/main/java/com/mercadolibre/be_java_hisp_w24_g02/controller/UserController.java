@@ -1,5 +1,5 @@
 package com.mercadolibre.be_java_hisp_w24_g02.controller;
-import com.mercadolibre.be_java_hisp_w24_g02.dto.FollowUserDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UpdateToRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IUserService;
@@ -23,7 +23,7 @@ public class UserController {
      * */
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
     public ResponseEntity<String> unFollowUser(@PathVariable Integer userId, @PathVariable Integer userIdToUnfollow) {
-        FollowUserDTO followUserDTO = new FollowUserDTO(userId, userIdToUnfollow);
+        UpdateToRelationshipsDTO followUserDTO = new UpdateToRelationshipsDTO(userId, userIdToUnfollow);
         this.userService.unfollowUser(followUserDTO);
         return ResponseEntity.ok("Usuario se dejo de seguir exitosamente");
     }
@@ -37,7 +37,7 @@ public class UserController {
      * */
     @PostMapping("/{userId}/follow/{userIdToFollow}")
     public ResponseEntity<String> followUser(@PathVariable Integer userId, @PathVariable Integer userIdToFollow) {
-        FollowUserDTO followUserDTO = new FollowUserDTO(userId, userIdToFollow);
+        UpdateToRelationshipsDTO followUserDTO = new UpdateToRelationshipsDTO(userId, userIdToFollow);
         userService.followUser(followUserDTO);
         return ResponseEntity.ok("Usuario seguido exitosamente");
     }

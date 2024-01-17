@@ -6,6 +6,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class ValidateDate {
+
+
+    /**
+     * This method validate if the date is valid
+     * @param date
+     * @param format
+     * @return LocalDate
+     * */
     public static LocalDate validateDateString(String date, String format){
         try {
             DateTimeFormatter formatDate = DateTimeFormatter.ofPattern(format);

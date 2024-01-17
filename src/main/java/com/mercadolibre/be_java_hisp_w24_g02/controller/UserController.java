@@ -1,7 +1,6 @@
 package com.mercadolibre.be_java_hisp_w24_g02.controller;
-
-import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowedsPostsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.FollowUserDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IUserService;
 import org.apache.coyote.BadRequestException;
@@ -36,7 +35,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/users/{userId}/followers/count")
+    @GetMapping("/{userId}/followers/count")
     public ResponseEntity<UserFollowersCountDTO>getUserFollowersCount(@PathVariable Integer userId){
         UserFollowersCountDTO userFollowersCountDTO = userService.getUserFollowersCount(userId);
         return ResponseEntity.ok(userFollowersCountDTO);

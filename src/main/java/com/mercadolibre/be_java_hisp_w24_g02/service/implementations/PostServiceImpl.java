@@ -18,6 +18,11 @@ public class PostServiceImpl implements IPostService {
     @Autowired
     private IUserRepository userRepository;
 
+    /**
+     * Create a new product post
+     * @param createPostDTO
+     * @throws NotFoundException if the user id not exists
+     */
     @Override
     public void createProductPost(CreatePostDTO createPostDTO) {
         if(this.userRepository.findById(createPostDTO.userId()).isEmpty()){
@@ -27,6 +32,11 @@ public class PostServiceImpl implements IPostService {
         System.out.println(this.postRepository.findAll());
     }
 
+    /**
+     * Transform a CreatePostDTO to a Post entity
+     * @param postDAO
+     * @return Post entity
+     */
     private Post transformCreatePostDAOToPostEntity(CreatePostDTO postDAO){
         Integer id = this.postRepository.findAll().size();
         return new Post(

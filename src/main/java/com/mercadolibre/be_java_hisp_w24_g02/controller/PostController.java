@@ -18,6 +18,11 @@ public class PostController {
     @Autowired
     private IPostService postService;
 
+    /**
+     * Add new product post
+     * @param createPostDTO
+     * @return ResponseEntity with status 200 or 400 if the request is invalid
+     */
     @PostMapping("/post")
     public ResponseEntity<?> addNewProductPost(@Valid @RequestBody CreatePostDTO createPostDTO){
         this.postService.createProductPost(createPostDTO);

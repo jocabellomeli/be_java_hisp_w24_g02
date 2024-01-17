@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Repository
 public class PostRepositoryImpl implements IPostRepository {
 
-    List<Post> posts;
+    private List<Post> posts;
 
     public PostRepositoryImpl() {
         System.out.println(loadData());

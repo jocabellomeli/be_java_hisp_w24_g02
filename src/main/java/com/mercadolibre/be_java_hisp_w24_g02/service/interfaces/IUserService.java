@@ -15,6 +15,4 @@ public interface IUserService {
     UserRelationshipsDTO getUserFollowers(Integer userId, String order);
     UserRelationshipsDTO getUserFollowed(Integer userId, String order);
 
-    UserFollowedsPostsDTO getFollowedPost(Integer userId);
-
 }

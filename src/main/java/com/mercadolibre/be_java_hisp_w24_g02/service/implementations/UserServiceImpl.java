@@ -21,8 +21,6 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IUserRepository userRepository;
-    @Autowired
-    private IPostRepository postRepository;
 
     @Override
     public UserRelationshipsDTO getUserFollowers(Integer userId, String order){
@@ -53,17 +51,6 @@ public class UserServiceImpl implements IUserService {
         return getUserRelationshipsDTO(user, followed, false);
 
     }
-
-
-    @Override
-    public UserFollowersCountDTO getUserFollowersCount(Integer userId) {
-        Optional<User> user = this.userRepository.findById(userId);
-        if (user.isEmpty()){
-            throw new NotFoundException("user id"+ userId + "not fount");
-        }
-        Integer followersCount = user.get().getFollowers().size();
-        return new UserFollowersCountDTO(user.get().getId(),user.get().getName(),followersCount);
-}
     private List<UserBasicInfoDTO> orderList (List<UserBasicInfoDTO> list, String order) {
         if (order.equals("none")) {
             return list;
@@ -87,12 +74,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void unfollowUser(UpdateToRelationshipsDTO followUserDTO) {
-        User user = this.userRepository.findById(followUserDTO.userId())
-                .orElseThrow(() -> new NotFoundException("User " + followUserDTO.userId() + " not found"));
-        User userToUnfollow = this.userRepository.findById(followUserDTO.userToUpdate())
-                .orElseThrow(() -> new NotFoundException("User to unfollow " + followUserDTO.userToUpdate() + " not found"));
-
+    public void unfollowUser(UpdateToRelationshipsDTO unfollowUserDTO) {
+        User user = getUser(unfollowUserDTO.userId());
+        User userToUnfollow = getUser(unfollowUserDTO.userToUpdate());
 
         user.setFollowed(this.filterFollowed(user, userToUnfollow));
         userToUnfollow.setFollowers(this.filterFollowers(user, userToUnfollow));
@@ -104,12 +88,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void followUser(UpdateToRelationshipsDTO followUserDTO) {
 
-        User follower = userRepository.findById(followUserDTO.userId())
-                .orElseThrow(() -> new NotFoundException("User not found: " + followUserDTO.userId()));
-
-        User userToFollow = userRepository.findById(followUserDTO.userToUpdate())
-                .orElseThrow(() -> new NotFoundException("User to follow not found: " + followUserDTO.userToUpdate()));
-
+        User follower = getUser(followUserDTO.userId());
+        User userToFollow = getUser(followUserDTO.userToUpdate());
 
         if (follower.getFollowed().contains(userToFollow)  && userToFollow.getFollowers().contains(follower)) {
             throw new BadRequestException("Ya estás siguiendo a este usuario: " + followUserDTO.userToUpdate());
@@ -137,62 +117,19 @@ public class UserServiceImpl implements IUserService {
     private User getUser(Integer userId) {
         return userRepository.findById(userId)
                 .orElseThrow(
-                        () -> new NotFoundException("User not found")
+                        () -> new NotFoundException("User not found with id: " + userId)
                 );
     }
-    
-    public UserFollowedsPostsDTO getFollowedPost(Integer userId){
-        Optional<User> user = userRepository.findById(userId);
-        if(user.isPresent()){
-            List<Integer> getIdsFollowed = getIdsFollowed(user.get());
-            List<Post> posts = postRepository.getPostOfFollowedList(getIdsFollowed);
-            return new UserFollowedsPostsDTO(
-                    user.get().getId(),
-                    posts.stream().map(this::convertPostsDTO).toList()
-            );
+
+    @Override
+    public UserFollowersCountDTO getUserFollowersCount(Integer userId) {
+        Optional<User> user = this.userRepository.findById(userId);
+        if (user.isEmpty()){
+            throw new NotFoundException("user id"+ userId + "not fount");
         }
-        throw new NotFoundException("User not found");
+        Integer followersCount = user.get().getFollowers().size();
+        return new UserFollowersCountDTO(user.get().getId(),user.get().getName(),followersCount);
     }
 
-    public List<Integer> getIdsFollowed(User user) {
-        return user.getFollowed().stream().map(User::getId).toList();
-    }
-
-    public UserFollowedsPostsDTO orderByDate(Integer userId, String order){
-        UserFollowedsPostsDTO userFollowedsPostsDTO = getFollowedPost(userId);
-        if(userId == null){
-            throw new NotFoundException("User not found");
-        }
-        return new UserFollowedsPostsDTO(
-                userFollowedsPostsDTO.userId(),
-                orderListPost(userFollowedsPostsDTO, order)
-        );
-    }
-
-    private List<PostDto> orderListPost(UserFollowedsPostsDTO list, String order){
-        if (order.equals("date_asc")){
-            return list.posts().stream().sorted(Comparator.comparing(PostDto::date)).toList();
-        }
-        return list.posts().stream().sorted(Comparator.comparing(PostDto::date).reversed()).toList();
-    }
-
-    private PostDto convertPostsDTO(Post posts){
-        return new PostDto(posts.getPostId(),
-                            posts.getUserId(),
-                            posts.getDate(),
-                            posts.getProduct(),
-                            posts.getCategory(),
-                            posts.getPrice());
-    }
-
-    public UserFollowedsPostsDTO getFollowedPost(Integer userId, String order){
-        if (order.equals("none")) {
-            return getFollowedPost(userId);
-        }
-        if (order.equals("date_asc") || order.equals("date_desc")) {
-            return orderByDate(userId, order);
-        }
-        throw new BadRequestException("Invalid order");
-    }
 
 }

@@ -21,7 +21,7 @@ Desarrollar una API para un escenario determinado de manera grupal. En el punto 
 - [US0003] - Get followers list for a user - Ignacio Collado
 - [US0004] - Get followed list for a user - Stefano Guillermo Tagliaferri
 - [US0005] - Add a new post - Jose Joaquin Cabello Alegria
-- [US0006] - Get recent posts from the followed users - Juan Camilo Guerrero Alarcon
+- [US0006] - Get recent posts from the followed users - Juan Camilo Guerrero Alarcon y Juan Esteban Guevara Perez
 - [US0007] - Unfollow user - Juan Felipe Saenz Garcia y Jose Joaquin Cabello Alegria
 - [US0008] - Get followers or followed list for a user, with order by name asc and desc - Ignacio Collado y Stefano Guillermo Tagliaferri
 - [US0009] - Get recent posts from the followed users, with order by date asc and desc - Juan Camilo Guerrero Alarcon

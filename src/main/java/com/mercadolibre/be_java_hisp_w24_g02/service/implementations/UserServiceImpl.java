@@ -123,12 +123,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserFollowersCountDTO getUserFollowersCount(Integer userId) {
-        Optional<User> user = this.userRepository.findById(userId);
-        if (user.isEmpty()){
-            throw new NotFoundException("user id"+ userId + "not fount");
-        }
-        Integer followersCount = user.get().getFollowers().size();
-        return new UserFollowersCountDTO(user.get().getId(),user.get().getName(),followersCount);
+        User user = getUser(userId);
+        Integer followersCount = user.getFollowers().size();
+        return new UserFollowersCountDTO(user.getId(),user.getName(),followersCount);
     }
 
 

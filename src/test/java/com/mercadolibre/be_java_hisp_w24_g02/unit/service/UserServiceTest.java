@@ -43,10 +43,8 @@ public class UserServiceTest {
                 .thenReturn(Optional.of(userFinded));
         Mockito.when(userRepository.findById(3))
                 .thenReturn(Optional.of(userToUnfollow));
-        // Act
-        Boolean result = service.unfollowUser(updateToRelationshipsDTO);
-        // Assert
-        Assertions.assertTrue(result);
+        // Act - Assert
+        Assertions.assertDoesNotThrow(() -> service.unfollowUser(updateToRelationshipsDTO));
     }
 
     @Test

@@ -62,6 +62,76 @@ public class UserServiceTest {
 
     }
     @Test
+    @DisplayName("Verify exception to not found user id of follower.")
+    public void followUSerTestNotFoundFollower(){
+        // Arrange
+        UpdateToRelationshipsDTO updateToRelationshipsDTO = new UpdateToRelationshipsDTO(10, 2);
+        User user = new User(
+                2,
+                "Usuario 1",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.findById(10)).thenReturn(Optional.empty());
+        // Act - Assert
+        assertThrows(NotFoundException.class,
+                () -> service.followUser(updateToRelationshipsDTO));
+
+    }
+    @Test
+    @DisplayName("Verify exception to not found user id of followed.")
+    public void followUSerTestNotFoundFollowed(){
+        // Arrange
+        UpdateToRelationshipsDTO updateToRelationshipsDTO = new UpdateToRelationshipsDTO(2, 10);
+        User user = new User(
+                2,
+                "Usuario 2",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.findById(2)).thenReturn(Optional.of(user));
+        when(userRepository.findById(10)).thenReturn(Optional.empty());
+        // Act - Assert
+        assertThrows(NotFoundException.class,
+                () -> service.followUser(updateToRelationshipsDTO));
+    }
+
+    @Test
+    @DisplayName("Verify exception to user id greater than zero .")
+    public void followUSerTestInvalidUser(){
+        //Arrange
+        UpdateToRelationshipsDTO updateToRelationshipsDTO = new UpdateToRelationshipsDTO(0, 2);
+
+        // Act - Assert BadRequestException
+        assertThrows(BadRequestException.class,
+                () -> service.followUser(updateToRelationshipsDTO));
+    }
+
+    @Test
+    @DisplayName("Verify exception that the user is already followed .")
+    public void followUSerTestUserAlreadyFollowing(){
+        //Arrange
+        UpdateToRelationshipsDTO updateToRelationshipsDTO = new UpdateToRelationshipsDTO(1, 2);
+        User follower = new User(
+                1,
+                "Follower",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User userToFollow = new User(
+                2,
+                "UserToFollow",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(follower));
+        Mockito.when(userRepository.findById(2)).thenReturn(Optional.of(userToFollow));
+
+        follower.setFollowed(List.of(userToFollow));
+        userToFollow.setFollowers(List.of(follower));
+
+        //Act - Assert
+        assertThrows(BadRequestException.class,
+                () -> service.followUser(updateToRelationshipsDTO));
+
+    }
+
+    @Test
     @DisplayName("Verify params of getUserFollowers method with name_asc param")
     void testGetUserFollowersNameAscParam() {
 

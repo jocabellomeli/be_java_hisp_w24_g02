@@ -88,12 +88,12 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void followUser(UpdateToRelationshipsDTO followUserDTO) {
 
+        if(followUserDTO.userId() <= 0 || followUserDTO.userToUpdate() <= 0){
+            throw new BadRequestException("El usuario debe ser mayor a cero");
+        }
         User follower = getUser(followUserDTO.userId());
         User userToFollow = getUser(followUserDTO.userToUpdate());
 
-        if(follower.getId() <= 0 || userToFollow.getId() <= 0){
-            throw new BadRequestException("El usuario debe ser mayor a cero");
-        }
         if (follower.getFollowed().contains(userToFollow)  && userToFollow.getFollowers().contains(follower)) {
             throw new BadRequestException("Ya estás siguiendo a este usuario: " + followUserDTO.userToUpdate());
         }

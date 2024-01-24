@@ -6,6 +6,7 @@ import com.mercadolibre.be_java_hisp_w24_g02.entity.User;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.BadRequestException;
 import com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces.IUserRepository;
 import com.mercadolibre.be_java_hisp_w24_g02.service.implementations.UserServiceImpl;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,28 +30,90 @@ public class UserServiceTest {
     private IUserRepository userRepository;
 
     @Test
-    void testGetUserFollowersParams() {
+    @DisplayName("Verify params of getUserFollowers method with name_asc param")
+    void testGetUserFollowersNameAscParam() {
 
         User user = new User(1, "user1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
 
         assertDoesNotThrow(() -> service.getUserFollowers(1, "name_asc"));
+    }
+
+    @Test
+    @DisplayName("Verify params of getUserFollowers method with name_desc param")
+    void testGetUserFollowersNameDescParam() {
+
+        User user = new User(1, "user1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+
         assertDoesNotThrow(() -> service.getUserFollowers(1, "name_desc"));
-        assertDoesNotThrow(() -> service.getUserFollowers(1, ""));
+    }
+
+    @Test
+    @DisplayName("Verify params of getUserFollowers method with default param")
+    void testGetUserFollowersDefaultParam() {
+
+        User user = new User(1, "user1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+
+        assertDoesNotThrow(() -> service.getUserFollowers(1, "none"));
+    }
+
+    @Test
+    @DisplayName("Verify params of getUserFollowers method with no allowed param")
+    void testGetUserFollowersNoAllowedParam() {
+
+        User user = new User(1, "user1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+
         assertThrows(BadRequestException.class, () -> service.getUserFollowers(1, "other"));
     }
 
     @Test
-    void testGetUserFollowedParams() {
+    @DisplayName("Verify params of getUserFollowed method with name_asc param")
+    void testGetUserFollowedNameAscParam() {
 
         User user = new User(1, "user1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         when(userRepository.findById(1)).thenReturn(Optional.of(user));
 
         assertDoesNotThrow(() -> service.getUserFollowed(1, "name_asc"));
+    }
+
+    @Test
+    @DisplayName("Verify params of getUserFollowed method with name_desc param")
+    void testGetUserFollowedNameDescParam() {
+
+        User user = new User(1, "user1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+
         assertDoesNotThrow(() -> service.getUserFollowed(1, "name_desc"));
-        assertDoesNotThrow(() -> service.getUserFollowed(1, ""));
+    }
+
+    @Test
+    @DisplayName("Verify params of getUserFollowed method with default param")
+    void testGetUserFollowedDefaultParam() {
+
+        User user = new User(1, "user1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+
+        assertDoesNotThrow(() -> service.getUserFollowed(1, "none"));
+    }
+
+    @Test
+    @DisplayName("Verify params of getUserFollowed method with no allowed param")
+    void testGetUserFollowedNoAllowedParam() {
+
+        User user = new User(1, "user1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+
         assertThrows(BadRequestException.class, () -> service.getUserFollowed(1, "other"));
     }
 

@@ -52,7 +52,7 @@ public class UserServiceImpl implements IUserService {
 
     }
     private List<UserBasicInfoDTO> orderList (List<UserBasicInfoDTO> list, String order) {
-        if (order.equals("none")) {
+        if (order.isEmpty()) {
             return list;
         }
         if (order.equals("name_asc")) {

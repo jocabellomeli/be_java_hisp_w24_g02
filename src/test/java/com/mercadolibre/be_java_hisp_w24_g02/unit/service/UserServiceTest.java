@@ -1,11 +1,23 @@
 package com.mercadolibre.be_java_hisp_w24_g02.unit.service;
 
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserBasicInfoDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.entity.User;
+import com.mercadolibre.be_java_hisp_w24_g02.exception.BadRequestException;
 import com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces.IUserRepository;
 import com.mercadolibre.be_java_hisp_w24_g02.service.implementations.UserServiceImpl;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -16,6 +28,31 @@ public class UserServiceTest {
     @Mock
     private IUserRepository userRepository;
 
+    @Test
+    void testGetUserFollowersParams() {
+
+        User user = new User(1, "user1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+
+        assertDoesNotThrow(() -> service.getUserFollowers(1, "name_asc"));
+        assertDoesNotThrow(() -> service.getUserFollowers(1, "name_desc"));
+        assertDoesNotThrow(() -> service.getUserFollowers(1, ""));
+        assertThrows(BadRequestException.class, () -> service.getUserFollowers(1, "other"));
+    }
+
+    @Test
+    void testGetUserFollowedParams() {
+
+        User user = new User(1, "user1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+
+        assertDoesNotThrow(() -> service.getUserFollowed(1, "name_asc"));
+        assertDoesNotThrow(() -> service.getUserFollowed(1, "name_desc"));
+        assertDoesNotThrow(() -> service.getUserFollowed(1, ""));
+        assertThrows(BadRequestException.class, () -> service.getUserFollowed(1, "other"));
+    }
 
 
 }

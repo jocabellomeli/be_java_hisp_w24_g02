@@ -50,7 +50,7 @@ public class UserController {
      * @return a UserRelationshipsDTO with a list of followers of a user
      * */
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<UserRelationshipsDTO> getUserFollowers(@PathVariable Integer userId, @RequestParam(defaultValue = "none") String order) {
+    public ResponseEntity<UserRelationshipsDTO> getUserFollowers(@PathVariable Integer userId, @RequestParam(defaultValue = "") String order) {
         UserRelationshipsDTO userRelationshipsDTO = userService.getUserFollowers(userId, order);
         return ResponseEntity.ok(userRelationshipsDTO);
     }
@@ -64,7 +64,7 @@ public class UserController {
      * @return a UserRelationshipsDTO with a list of followed of a user
      * */
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<UserRelationshipsDTO> getUserFollowed(@PathVariable Integer userId, @RequestParam(defaultValue = "none") String order) {
+    public ResponseEntity<UserRelationshipsDTO> getUserFollowed(@PathVariable Integer userId, @RequestParam(defaultValue = "") String order) {
         UserRelationshipsDTO userRelationshipsDTO = userService.getUserFollowed(userId, order);
         return ResponseEntity.ok(userRelationshipsDTO);
     }

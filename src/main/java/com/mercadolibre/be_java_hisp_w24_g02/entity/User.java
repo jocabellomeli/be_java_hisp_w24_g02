@@ -14,7 +14,9 @@ public class User {
     private String name;
     private List<User> followers = new ArrayList<>();
     private List<User> followed = new ArrayList<>();
-    
+    private List<Integer> followersIds = new ArrayList<>();
+    private List<Integer> followedIds = new ArrayList<>();
+
     @Override
     public String toString() {
         return "User{" +

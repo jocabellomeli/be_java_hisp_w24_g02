@@ -63,41 +63,41 @@ public class UserRepositoryImpl implements IUserRepository {
         try {
             file = ResourceUtils.getFile("classpath:json/users.json");
             data = objectMapper.readValue(file, typeRef);
-            randomizeUsers(data);
+            createRelationships(data);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return data;
     }
 
-    private void randomizeUsers(ArrayList<User> data) {
+    private void createRelationships(ArrayList<User> data) {
         for (User user : data) {
             user.setFollowers(new ArrayList<>());
             user.setFollowed(new ArrayList<>());
         }
 
         for (User user : data) {
-            randomizeRelationships(data, user);
+            createRelationships(data, user);
         }
     }
 
-    private void randomizeRelationships(ArrayList<User> data, User user) {
-        while (user.getFollowed().size() < 5) {
-            User randomUser = getRandomUser(data, user.getId());
+    private void createRelationships(ArrayList<User> data, User user) {
+        List<Integer> followersIds = user.getFollowersIds();
+        List<Integer> followedIds = user.getFollowedIds();
 
-            if (!user.getFollowed().contains(randomUser)) {
-                user.getFollowed().add(randomUser);
-                randomUser.getFollowers().add(user);
+        for (Integer followerId : followersIds) {
+            User follower = data.stream().filter(user1 -> user1.getId().equals(followerId)).findFirst().orElse(null);
+            if (follower != null) {
+                user.getFollowers().add(follower);
             }
         }
-    }
 
-    private User getRandomUser(ArrayList<User> data, Integer excludeId) {
-        User randomUser;
-        do {
-            randomUser = data.get((int) (Math.random() * data.size()));
-        } while (randomUser.getId().equals(excludeId));
-        return randomUser;
-    }
+        for (Integer followedId : followedIds) {
+            User followed = data.stream().filter(user1 -> user1.getId().equals(followedId)).findFirst().orElse(null);
+            if (followed != null) {
+                user.getFollowed().add(followed);
+            }
+        }
 
+    }
 }

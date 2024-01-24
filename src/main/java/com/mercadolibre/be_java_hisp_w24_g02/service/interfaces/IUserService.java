@@ -10,7 +10,7 @@ public interface IUserService {
 
 
     UserFollowersCountDTO getUserFollowersCount(Integer userId);
-    void unfollowUser(UpdateToRelationshipsDTO followUserDTO);
+    Boolean unfollowUser(UpdateToRelationshipsDTO followUserDTO);
     void followUser(UpdateToRelationshipsDTO followUserDTO);
     UserRelationshipsDTO getUserFollowers(Integer userId, String order);
     UserRelationshipsDTO getUserFollowed(Integer userId, String order);

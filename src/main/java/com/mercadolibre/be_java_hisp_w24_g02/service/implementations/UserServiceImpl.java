@@ -74,7 +74,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void unfollowUser(UpdateToRelationshipsDTO unfollowUserDTO) {
+    public Boolean unfollowUser(UpdateToRelationshipsDTO unfollowUserDTO) {
         User user = getUser(unfollowUserDTO.userId());
         User userToUnfollow = getUser(unfollowUserDTO.userToUpdate());
 
@@ -83,6 +83,8 @@ public class UserServiceImpl implements IUserService {
 
         this.userRepository.update(user);
         this.userRepository.update(userToUnfollow);
+
+        return Boolean.TRUE;
     }
 
     @Override

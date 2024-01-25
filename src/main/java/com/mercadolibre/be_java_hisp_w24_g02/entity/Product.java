@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
+@EqualsAndHashCode
 public class Product {
     @JsonProperty("product_id")
     private Integer productId;

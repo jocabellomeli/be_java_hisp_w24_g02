@@ -412,8 +412,10 @@ public class UserServiceTest {
         //arrage
         Integer userid= 1;
         User user = new User(1, "Usuario 1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        user.setFollowersIds(Arrays.asList(3, 5, 6, 9, 2,8));
-        Integer expected = user.getFollowersIds().size();
+        User userFollower1= new User(2, "Usuario 2", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User userFollower2= new User(3, "Usuario 3", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        user.setFollowers(Arrays.asList(userFollower1,userFollower2));
+        Integer expected = user.getFollowers().size();
         //Act
         when(userRepository.findById(userid)).thenReturn(Optional.of(user));
         UserFollowersCountDTO userresult = service.getUserFollowersCount(userid);

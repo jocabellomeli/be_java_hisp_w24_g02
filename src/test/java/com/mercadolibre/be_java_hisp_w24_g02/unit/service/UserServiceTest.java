@@ -58,14 +58,13 @@ public class UserServiceTest {
 
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(follower));
         Mockito.when(userRepository.findById(2)).thenReturn(Optional.of(userToFollow));
-        boolean expected = followUserDTO.userId().equals(follower.getId()) || followUserDTO.userToUpdate().equals(userToFollow.getId());
-
+        List<User> expectedFollowed = new ArrayList<>();
+        expectedFollowed.add(userToFollow);
         // Act
         service.followUser(followUserDTO);
-        boolean result = follower.getFollowed().contains(userToFollow) || userToFollow.getFollowed().contains(follower);
 
         // Assert
-        Assertions.assertEquals(expected,result, "User not followed correctly");
+        Assertions.assertEquals(expectedFollowed, follower.getFollowed(), "User not followed correctly");
 
     }
     @Test

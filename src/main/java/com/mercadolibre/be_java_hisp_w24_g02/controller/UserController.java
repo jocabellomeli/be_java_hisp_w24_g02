@@ -3,12 +3,16 @@ import com.mercadolibre.be_java_hisp_w24_g02.dto.UpdateToRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.service.interfaces.IUserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
+@Validated
 public class UserController {
 
     @Autowired
@@ -36,7 +40,8 @@ public class UserController {
      * @return a message of success
      * */
     @PostMapping("/{userId}/follow/{userIdToFollow}")
-    public ResponseEntity<String> followUser(@PathVariable Integer userId, @PathVariable Integer userIdToFollow) {
+    public ResponseEntity<String> followUser(@PathVariable @Min(value = 1, message = "El usuario debe ser igual o mayor a 1") Integer userId,
+                                             @PathVariable @Min(value = 1, message = "El usuario debe ser igual o mayor a 1") Integer userIdToFollow) {
         UpdateToRelationshipsDTO followUserDTO = new UpdateToRelationshipsDTO(userId, userIdToFollow);
         userService.followUser(followUserDTO);
         return ResponseEntity.ok("Usuario seguido exitosamente");

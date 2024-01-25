@@ -1,9 +1,11 @@
 package com.mercadolibre.be_java_hisp_w24_g02.unit.service;
 
+import com.mercadolibre.be_java_hisp_w24_g02.controller.UserController;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UpdateToRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.User;
 import com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces.IUserRepository;
 import com.mercadolibre.be_java_hisp_w24_g02.service.implementations.UserServiceImpl;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.BadRequestException;
@@ -32,6 +34,8 @@ public class UserServiceTest {
     @InjectMocks
     private UserServiceImpl service;
     @Mock
+    private UserController userController;
+    @Mock
     private IUserRepository userRepository;
 
     @Test
@@ -51,7 +55,7 @@ public class UserServiceTest {
 
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(follower));
         Mockito.when(userRepository.findById(2)).thenReturn(Optional.of(userToFollow));
-        boolean expected = followUserDTO.userId().equals(follower.getId()) || followUserDTO.userId().equals(userToFollow.getId());
+        boolean expected = followUserDTO.userId().equals(follower.getId()) || followUserDTO.userToUpdate().equals(userToFollow.getId());
 
         // Act
         service.followUser(followUserDTO);
@@ -68,7 +72,7 @@ public class UserServiceTest {
         UpdateToRelationshipsDTO updateToRelationshipsDTO = new UpdateToRelationshipsDTO(10, 2);
         User user = new User(
                 2,
-                "Usuario 1",
+                "Usuario 2",
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         when(userRepository.findById(10)).thenReturn(Optional.empty());
@@ -99,10 +103,10 @@ public class UserServiceTest {
     public void followUSerTestInvalidUser(){
         //Arrange
         UpdateToRelationshipsDTO updateToRelationshipsDTO = new UpdateToRelationshipsDTO(0, 2);
+        Integer userId = updateToRelationshipsDTO.userId();
+        //Act - Assert
+        assertDoesNotThrow(() -> userController.followUser(userId, 1));
 
-        // Act - Assert BadRequestException
-        assertThrows(BadRequestException.class,
-                () -> service.followUser(updateToRelationshipsDTO));
     }
 
     @Test

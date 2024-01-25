@@ -1,11 +1,13 @@
 package com.mercadolibre.be_java_hisp_w24_g02.unit.service;
 
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UpdateToRelationshipsDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.User;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.BadRequestException;
 import com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces.IUserRepository;
 import com.mercadolibre.be_java_hisp_w24_g02.service.implementations.UserServiceImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -159,5 +162,20 @@ public class UserServiceTest {
                 .thenReturn(Optional.empty());
         // Act - Assert
         assertThrows(NotFoundException.class, () -> service.unfollowUser(updateToRelationshipsDTO));
+    }
+
+    @Test
+    public void UserFollowedCountTest(){
+        //arrage
+        Integer userid= 1;
+        User user = new User(1, "Usuario 1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        user.setFollowersIds(Arrays.asList(3, 5, 6, 9, 2,8));
+        Integer expected = user.getFollowersIds().size();
+        //Act
+        when(userRepository.findById(userid)).thenReturn(Optional.of(user));
+        UserFollowersCountDTO userresult = service.getUserFollowersCount(userid);
+        Integer result = userresult.followersCount();
+        //Assert
+        Assertions.assertEquals(expected,result);
     }
 }

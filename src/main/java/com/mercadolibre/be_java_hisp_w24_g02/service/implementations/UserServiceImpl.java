@@ -124,7 +124,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserFollowersCountDTO getUserFollowersCount(Integer userId) {
         User user = getUser(userId);
-        Integer followersCount = user.getFollowers().size();
+        Integer followersCount = user.getFollowersIds().size();
         return new UserFollowersCountDTO(user.getId(),user.getName(),followersCount);
     }
 

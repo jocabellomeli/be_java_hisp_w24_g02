@@ -407,6 +407,7 @@ public class UserServiceTest {
     }
 
     @Test
+    @DisplayName("Verify that follower count from an user is correct")
     public void UserFollowedCountTest(){
         //arrage
         Integer userid= 1;

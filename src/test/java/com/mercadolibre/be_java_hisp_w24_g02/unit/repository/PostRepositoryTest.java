@@ -11,7 +11,7 @@ public class PostRepositoryTest {
     @Test
     public void shouldFindAllSizeList() {
         // Arrange
-        Integer sizeExpected = 10;
+        Integer sizeExpected = 12;
         // Act
         Integer sizeResult = postRepository.findAll().size();
         // Assert

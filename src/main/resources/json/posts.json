@@ -148,5 +148,35 @@
     },
     "category": 10,
     "price": 129.99
+  },
+  {
+    "post_id": 11,
+    "user_id": 2,
+    "date": "2024-10-20",
+    "product": {
+      "product_id": 1010,
+      "product_name": "Reproductor de Blu-ray XYZ",
+      "type": "Reproductor de Blu-ray",
+      "brand": "XYZ",
+      "color": "Black",
+      "notes": "Reproductor de Blu-ray 4K con funciones inteligentes"
+    },
+    "category": 10,
+    "price": 129.99
+  },
+  {
+    "post_id": 12,
+    "user_id": 3,
+    "date": "2024-01-25",
+    "product": {
+      "product_id": 1010,
+      "product_name": "Altavoces ABC",
+      "type": "Altavoces",
+      "brand": "XYZ",
+      "color": "Black",
+      "notes": "Altavoces bluetooth de alta fidelidad"
+    },
+    "category": 10,
+    "price": 129.99
   }
 ]

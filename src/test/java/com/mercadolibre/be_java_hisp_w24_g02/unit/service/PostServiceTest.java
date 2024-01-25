@@ -1,5 +1,7 @@
 package com.mercadolibre.be_java_hisp_w24_g02.unit.service;
 
+import com.mercadolibre.be_java_hisp_w24_g02.dto.CreatePostDTO;
+import com.mercadolibre.be_java_hisp_w24_g02.dto.CreateProductDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.PostDto;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowedsPostsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.Post;
@@ -10,12 +12,14 @@ import com.mercadolibre.be_java_hisp_w24_g02.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w24_g02.repository.implementations.PostRepositoryImpl;
 import com.mercadolibre.be_java_hisp_w24_g02.repository.implementations.UserRepositoryImpl;
 import com.mercadolibre.be_java_hisp_w24_g02.service.implementations.PostServiceImpl;
+import com.mercadolibre.be_java_hisp_w24_g02.util.ValidateDate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
@@ -295,4 +299,57 @@ public class PostServiceTest {
         Assertions.assertEquals(expected, result);
     }
 
+    @Test
+    @DisplayName("Test create product post with invalid user id")
+    public void createProductPostWithInvalidUserId(){
+        // Arrange
+        CreatePostDTO createPostIn = new CreatePostDTO(
+                1,
+                "2024-01-25",
+                new CreateProductDTO(
+                        1001,
+                     "Laptop XYZ",
+                            "Laptop",
+                            "XYZ",
+                            "Silver",
+                            "Potente laptop para tareas exigentes"
+                ),
+                2,
+                1299.99
+                );
+
+
+
+        when(this.userRepository.findById(createPostIn.userId())).thenReturn(Optional.empty());
+
+        // Act
+        // Assert
+        Assertions.assertThrows(NotFoundException.class, () -> this.service.createProductPost(createPostIn));
+    }
+
+    @Test
+    @DisplayName("Test create product post happy path")
+    public void createProductPostHappyPath() {
+        // Arrange
+        CreatePostDTO createPostIn = new CreatePostDTO(
+                1,
+                "25-01-2024",
+                new CreateProductDTO(
+                        1001,
+                        "Laptop XYZ",
+                        "Laptop",
+                        "XYZ",
+                        "Silver",
+                        "Potente laptop para tareas exigentes"
+                ),
+                2,
+                1299.99
+        );
+        User user = new User(1, "Usuario 1", new ArrayList<>(), new ArrayList<>(), List.of(3, 5, 6, 9), List.of(2,3));
+
+        when(this.userRepository.findById(createPostIn.userId())).thenReturn(Optional.of(user));
+        when(this.postRepository.save(Mockito.any(Post.class))).thenReturn(new Post());
+        // Act - Assert
+        Assertions.assertDoesNotThrow(() -> this.service.createProductPost(createPostIn));
+    }
 }

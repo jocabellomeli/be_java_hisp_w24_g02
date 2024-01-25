@@ -75,13 +75,4 @@ public class PostRepositoryImpl implements IPostRepository {
         return data;
     }
 
-
-    @Override
-    public List<Post> getPostOfFollowedList(List<Integer> usersIds) {
-        LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
-
-        return posts.stream().filter(post -> usersIds.contains(post.getUserId()) && post.getDate().isAfter(twoWeeksAgo)
-        ).collect(Collectors.toList());
-    }
-
 }

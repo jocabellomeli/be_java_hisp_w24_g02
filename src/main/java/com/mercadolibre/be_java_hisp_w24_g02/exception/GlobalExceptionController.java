@@ -2,6 +2,7 @@ package com.mercadolibre.be_java_hisp_w24_g02.exception;
 
 import com.mercadolibre.be_java_hisp_w24_g02.dto.ExceptionDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.FieldExceptionDTO;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -27,7 +28,6 @@ public class GlobalExceptionController {
         return new ResponseEntity<>(exceptionDAO, HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<FieldExceptionDTO>> handleValidationErrors(MethodArgumentNotValidException ex) {
         List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
@@ -35,5 +35,13 @@ public class GlobalExceptionController {
                 new FieldExceptionDTO(fieldError.getDefaultMessage(), fieldError.getField(), fieldError.getCode())
         ).toList();
         return ResponseEntity.badRequest().body(exceptions);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<List<ExceptionDTO>> validationException(ConstraintViolationException e){
+        List<ExceptionDTO> exceptions = e.getConstraintViolations().stream().map(constraintViolation -> {
+            return new ExceptionDTO(constraintViolation.getMessage());
+        }).toList();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptions);
     }
 }

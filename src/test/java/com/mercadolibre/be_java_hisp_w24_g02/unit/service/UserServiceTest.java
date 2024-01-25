@@ -1,10 +1,15 @@
 package com.mercadolibre.be_java_hisp_w24_g02.unit.service;
 
+import com.mercadolibre.be_java_hisp_w24_g02.controller.UserController;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UpdateToRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserFollowersCountDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserBasicInfoDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.dto.UserRelationshipsDTO;
 import com.mercadolibre.be_java_hisp_w24_g02.entity.User;
+import com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces.IUserRepository;
+import com.mercadolibre.be_java_hisp_w24_g02.service.implementations.UserServiceImpl;
+import jakarta.validation.ConstraintViolationException;
+import org.junit.jupiter.api.Assertions;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.NotFoundException;
 import com.mercadolibre.be_java_hisp_w24_g02.exception.BadRequestException;
 import com.mercadolibre.be_java_hisp_w24_g02.repository.interfaces.IUserRepository;
@@ -17,8 +22,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -31,9 +36,106 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserServiceImpl service;
-
+    @Mock
+    private UserController userController;
     @Mock
     private IUserRepository userRepository;
+
+    @Test
+    @DisplayName("Verify following a user.")
+    public void followUserTest() {
+        // Arrange
+        UpdateToRelationshipsDTO followUserDTO = new UpdateToRelationshipsDTO(1, 2);
+
+        User follower = new User(
+                1,
+                "Follower",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User userToFollow = new User(
+                2,
+                "UserToFollow",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(follower));
+        Mockito.when(userRepository.findById(2)).thenReturn(Optional.of(userToFollow));
+        List<User> expectedFollowed = new ArrayList<>();
+        expectedFollowed.add(userToFollow);
+        // Act
+        service.followUser(followUserDTO);
+
+        // Assert
+        Assertions.assertEquals(expectedFollowed, follower.getFollowed(), "User not followed correctly");
+
+    }
+    @Test
+    @DisplayName("Verify exception to not found user id of follower.")
+    public void followUSerTestNotFoundFollower(){
+        // Arrange
+        UpdateToRelationshipsDTO updateToRelationshipsDTO = new UpdateToRelationshipsDTO(10, 2);
+        User user = new User(
+                2,
+                "Usuario 2",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.findById(10)).thenReturn(Optional.empty());
+        // Act - Assert
+        assertThrows(NotFoundException.class,
+                () -> service.followUser(updateToRelationshipsDTO));
+
+    }
+    @Test
+    @DisplayName("Verify exception to not found user id of followed.")
+    public void followUSerTestNotFoundFollowed(){
+        // Arrange
+        UpdateToRelationshipsDTO updateToRelationshipsDTO = new UpdateToRelationshipsDTO(2, 10);
+        User user = new User(
+                2,
+                "Usuario 2",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.findById(2)).thenReturn(Optional.of(user));
+        when(userRepository.findById(10)).thenReturn(Optional.empty());
+        // Act - Assert
+        assertThrows(NotFoundException.class,
+                () -> service.followUser(updateToRelationshipsDTO));
+    }
+
+    @Test
+    @DisplayName("Verify exception to user id greater than zero .")
+    public void followUSerTestInvalidUser(){
+        //Arrange
+        UpdateToRelationshipsDTO updateToRelationshipsDTO = new UpdateToRelationshipsDTO(0, 2);
+        Integer userId = updateToRelationshipsDTO.userId();
+        //Act - Assert
+        assertDoesNotThrow(() -> userController.followUser(userId, 1));
+
+    }
+
+    @Test
+    @DisplayName("Verify exception that the user is already followed .")
+    public void followUSerTestUserAlreadyFollowing(){
+        //Arrange
+        UpdateToRelationshipsDTO updateToRelationshipsDTO = new UpdateToRelationshipsDTO(1, 2);
+        User follower = new User(
+                1,
+                "Follower",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User userToFollow = new User(
+                2,
+                "UserToFollow",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        Mockito.when(userRepository.findById(1)).thenReturn(Optional.of(follower));
+        Mockito.when(userRepository.findById(2)).thenReturn(Optional.of(userToFollow));
+
+        follower.setFollowed(List.of(userToFollow));
+        userToFollow.setFollowers(List.of(follower));
+
+        //Act - Assert
+        assertThrows(BadRequestException.class,
+                () -> service.followUser(updateToRelationshipsDTO));
+
+    }
 
     @Test
     @DisplayName("Test for checking if the followed user list is sorted correctly ascendent")
@@ -275,6 +377,7 @@ public class UserServiceTest {
         Assertions.assertEquals(expected, result);
     }
 
+    @Test
     @DisplayName("Verify params of getUserFollowers method with name_asc param")
     void testGetUserFollowersNameAscParam() {
 

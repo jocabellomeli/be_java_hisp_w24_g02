@@ -17,7 +17,7 @@
   {
     "post_id": 2,
     "user_id": 2,
-    "date": "2024-02-01",
+    "date": "2024-01-24",
     "product": {
       "product_id": 1002,
       "product_name": "Smartphone ABC",
@@ -32,7 +32,7 @@
   {
     "post_id": 3,
     "user_id": 3,
-    "date": "2024-06-10",
+    "date": "2023-06-10",
     "product": {
       "product_id": 1003,
       "product_name": "Cámara DSLR 123",

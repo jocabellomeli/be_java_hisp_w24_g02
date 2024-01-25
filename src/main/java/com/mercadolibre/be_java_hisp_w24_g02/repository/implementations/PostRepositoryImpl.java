@@ -76,7 +76,6 @@ public class PostRepositoryImpl implements IPostRepository {
     }
 
 
-    @Override
     public List<Post> getPostOfFollowedList(List<Integer> usersIds) {
         LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
 

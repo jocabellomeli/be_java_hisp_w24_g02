@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface IPostRepository extends IDAORepository<Post> {
 
-    List<Post> getPostOfFollowedList(List<Integer> userId);
-
 }

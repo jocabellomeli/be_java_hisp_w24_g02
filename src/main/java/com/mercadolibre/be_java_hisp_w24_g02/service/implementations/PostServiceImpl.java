@@ -15,9 +15,11 @@ import com.mercadolibre.be_java_hisp_w24_g02.util.ValidateDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements IPostService {
@@ -100,11 +102,24 @@ public class PostServiceImpl implements IPostService {
         throw new BadRequestException("Invalid order");
     }
 
+    private List<Post> getPostOfFollowedList(List<Integer> userId) {
+        List<Post> posts = postRepository.findAll();
+
+        List<Post> followedPost = posts.stream().filter(post -> userId.contains(post.getUserId())).toList();
+        return getLastTwoWeeksPost(followedPost);
+    }
+
+    private List<Post> getLastTwoWeeksPost(List<Post> posts) {
+        LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+        return posts.stream().filter(post -> post.getDate().isAfter(twoWeeksAgo)).collect(Collectors.toList());
+    }
+
     public UserFollowedsPostsDTO getFollowedPost(Integer userId){
         Optional<User> user = userRepository.findById(userId);
+
         if(user.isPresent()){
             List<Integer> getIdsFollowed = getIdsFollowed(user.get());
-            List<Post> posts = postRepository.getPostOfFollowedList(getIdsFollowed);
+            List<Post> posts = getPostOfFollowedList(getIdsFollowed);
             return new UserFollowedsPostsDTO(
                     user.get().getId(),
                     posts.stream().map(this::convertPostsDTO).toList()
@@ -114,7 +129,7 @@ public class PostServiceImpl implements IPostService {
     }
 
     public List<Integer> getIdsFollowed(User user) {
-        return user.getFollowed().stream().map(User::getId).toList();
+        return user.getFollowedIds();
     }
 
 }

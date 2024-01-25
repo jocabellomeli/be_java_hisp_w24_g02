@@ -22,6 +22,10 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", followers=" + followers +
+                ", followed=" + followed +
+                ", followersIds=" + followersIds +
+                ", followedIds=" + followedIds +
                 '}';
     }
 }

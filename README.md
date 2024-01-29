@@ -33,8 +33,8 @@ Desarrollar una API para un escenario determinado de manera grupal. En el punto 
 - [T0004] - Verify that list is successfully ordered - Stefano Guillermo Tagliaferri
 - [T0005] - Verify params to order by date - Jose Joaquin Cabello Alegria
 - [T0006] - Verify that list of post is successfully ordered - Juan Camilo Guerrero Alarcon
-- [T0007] - Verify that followers count of a user is correct - Jose Joaquin Cabello Alegria
-- [T0008] - Verify that post of list are from two weeks - Juan Felipe Saenz Garcia y Juan Camilo Guerrero Alarcon
+- [T0007] - Verify that followers count of a user is correct - Juan Esteban Guevara
+- [T0008] - Verify that post of list are from two weeks - Juan Esteban Guevara y Juan Camilo Guerrero Alarcon
 
 ## Integrantes
 - Ignacio Benjamin Collado
